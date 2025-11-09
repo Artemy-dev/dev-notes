@@ -7,7 +7,7 @@
 | Раздел | Описание |
 |--------|-----------|
 | [git/](git/) | Всё про Git |
-| [languages/](gilanguagest/) | Основы ЯП |
+| [languages/](languages/) | Основы ЯП |
 | [sql/](sql/) | Основы SQL |
 | [nosql/](nosql/) | Материалы по NoSQL |
 | [ubuntu/](ubuntu/) | Практика работы с Ubuntu Server |
