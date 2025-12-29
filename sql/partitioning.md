@@ -49,13 +49,20 @@ CREATE TABLE orders (
 );
 ```
 
--- Проблемные запросы:
--- 1. SELECT * FROM orders WHERE created_at BETWEEN '2024-01-01' AND '2024-03-01';
---    (сканирует ВСЕ 100 млн строк)
--- 2. DELETE FROM orders WHERE created_at < '2020-01-01';
---    (очень медленно, блокирует таблицу)
+**Проблемные запросы:**
 
+```sql
+SELECT * FROM orders WHERE created_at BETWEEN '2024-01-01' AND '2024-03-01';
+```
 
+- Полное сканирование таблицы
+
+```sql
+DELETE FROM orders WHERE created_at < '2024-01-01';
+```
+
+- Таблица блокируется на запись на всё время выполнения
+- Запрос может быть прерван по таймауту
 
 
 
