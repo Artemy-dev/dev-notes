@@ -64,16 +64,95 @@ DELETE FROM orders WHERE created_at < '2024-01-01';
 - Таблица блокируется на запись на всё время выполнения
 - Запрос может быть прерван по таймауту
 
+---
 
+## Пример партиционирования по месяцам
 
+Вместо одной монолитной таблицы **order**s создадим партиции по месяцам:
 
+```text
+orders (логическая таблица)
+├── orders_2024_01 (партиция за январь 2024)
+├── orders_2024_02 (партиция за февраль 2024)
+├── orders_2024_03 (партиция за март 2024)
+└── orders_2024_04 (партиция за апрель 2024)
+```
 
+Все заказы за январь 2024 автоматически попадают в orders_2024_01, за февраль в orders_2024_02 и т.д.
 
+---
 
+## SQL-запросы для миграции (PostgreSQL)
 
+### Шаг 1: Создаём основную таблицу с объявлением партиционирования
 
+```sql
+-- 1. Создаём "шаблонную" таблицу с указанием способа партиционирования
+CREATE TABLE orders_new (
+    id BIGSERIAL NOT NULL,
+    user_id INTEGER NOT NULL,
+    amount DECIMAL(10,2),
+    status VARCHAR(50),
+    created_at TIMESTAMP NOT NULL DEFAULT NOW()
+) PARTITION BY RANGE (created_at);  -- Разделяем по диапазону дат
+```
 
+### Шаг 2: Создаём отдельные партиции
 
+```sql
+-- 2. Создаём партицию за 2024 год (пример)
+CREATE TABLE orders_2024 PARTITION OF orders_new
+FOR VALUES FROM ('2024-01-01') TO ('2025-01-01');
 
+-- 3. Создаём партицию за 2025 год
+CREATE TABLE orders_2025 PARTITION OF orders_new
+FOR VALUES FROM ('2025-01-01') TO ('2026-01-01');
 
+-- 4. Создаём партицию для старых данных (архив)
+CREATE TABLE orders_archive PARTITION OF orders_new
+FOR VALUES FROM ('2000-01-01') TO ('2024-01-01');
+```
 
+### Шаг 3: Переносим данные из старой таблицы orders
+
+```sql
+-- 5. Вставляем данные в новую партиционированную таблицу
+INSERT INTO orders_new (id, user_id, amount, status, created_at)
+SELECT id, user_id, amount, status, created_at 
+FROM orders;
+
+-- 6. Проверяем распределение
+SELECT 
+    tableoid::regclass as partition_name,
+    count(*) as row_count
+FROM orders_new
+GROUP BY tableoid
+ORDER BY partition_name;
+```
+
+### Шаг 4: Заменяем старую таблицу новой
+
+```sql
+-- 7. Переименовываем таблицы
+BEGIN;
+ALTER TABLE orders RENAME TO orders_old;      -- Старая → orders_old
+ALTER TABLE orders_new RENAME TO orders;      -- Новая → orders
+COMMIT;
+
+-- 8. Обновляем последовательность (sequence) для id
+--    Находим максимальный id и устанавливаем его для последовательности
+SELECT setval(pg_get_serial_sequence('orders', 'id'), 
+              (SELECT MAX(id) FROM orders));
+```
+
+### Шаг 5: Очистка (после проверки)
+
+```sql
+-- 9. После проверки, что всё работает (например, через неделю):
+--    Удаляем старую таблицу
+DROP TABLE orders_old CASCADE;
+
+-- 10. Создаём партицию на следующий год заранее
+CREATE TABLE orders_2026 PARTITION OF orders
+FOR VALUES FROM ('2026-01-01') TO ('2027-01-01');
+```
