@@ -45,7 +45,7 @@ CREATE TABLE orders (
     user_id INTEGER NOT NULL,
     amount DECIMAL(10,2),
     status VARCHAR(50),
-    created_at TIMESTAMP DEFAULT NOW()
+    created_at TIMESTAMPTZ DEFAULT NOW()
 );
 ```
 
