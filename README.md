@@ -12,4 +12,4 @@
 | [nosql/](nosql/) | Материалы по NoSQL |
 | [ubuntu/](ubuntu/) | Практика работы с Ubuntu Server |
 | [netsec/](netsec/) | Сети и информационная безопасность |
-| [backend](backend/) | Заметки по бэкенду |
+| [backend/](backend/) | Заметки по бэкенду |
