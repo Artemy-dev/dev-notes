@@ -57,6 +57,13 @@ docker-compose up -d
 docker ps
 ```
 
+Пример вывода:
+
+```text
+CONTAINER ID   IMAGE      COMMAND                  CREATED       STATUS          PORTS                                         NAMES
+0718f3a2cfd5   postgres   "docker-entrypoint.s…"   5 hours ago   Up 40 minutes   0.0.0.0:5433->5432/tcp, [::]:5433->5432/tcp   training-time-db-1
+```
+
 ---
 
 ## Подключение к БД из IDE
