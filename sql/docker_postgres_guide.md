@@ -24,17 +24,17 @@ docker-compose --version
 
 ```yaml
 services:
-  db:
-    image: postgres
-    restart: always
-    shm_size: 128mb
+  db:                   # Имя сервиса. Можно любое, это идентификатор контейнера в Docker
+    image: postgres     # Образ, который Docker будет использовать. Здесь официальный PostgreSQL
+    restart: always     # Если контейнер падает или Docker перезагружается, контейнер стартует снова
+    shm_size: 128mb     # Размер общей памяти (shared memory) для Postgres. Нужно для некоторых операций в БД
     environment:
-      POSTGRES_PASSWORD: 1234
-      POSTGRES_USER: postgres
-      POSTGRES_DB: data
+      POSTGRES_PASSWORD: 1234   # пароль для пользователя PostgreSQL (пользователь сам придумывает)
+      POSTGRES_USER: postgres   # имя пользователя PostgreSQL (пользователь сам придумывает)
+      POSTGRES_DB: data         # имя создаваемой базы данных при первом запуске (пользователь сам задаёт)
     ports:
-      - "5432:5432"  # если локальный PostgreSQL НЕ установлен
-      - "5433:5432"  # если локальный PostgreSQL уже есть на ПК
+      - "5432:5432"     # локальный порт 5432 → порт 5432 контейнера, если локального Postgres нет
+      - "5433:5432"     # локальный порт 5433 → порт 5432 контейнера, если локальный Postgres есть, чтобы не конфликтовать
 ```
 
 Объяснение про порты:
