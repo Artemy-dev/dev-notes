@@ -3,12 +3,15 @@
 ---
 
 ## Установка Docker
+
 Скачиваем и устанавливаем [Docker](https://www.docker.com/get-started/)
 
 ### Проверка установки
+
 ```bash
 docker --version
 ```
+
 ```bash
 docker-compose --version
 ```
@@ -16,7 +19,9 @@ docker-compose --version
 ---
 
 ## Создание проекта и docker-compose.yml
+
 Создаём папку проекта и внутри docker-compose.yml:
+
 ```yaml
 services:
   db:
@@ -33,6 +38,7 @@ services:
 ```
 
 Объяснение про порты:
+
 - `5432:5432` стандартный порт Postgres в контейнере и на локальном ПК.
 - `5433:5432` локальный порт 5433 на ПК → порт 5432 в контейнере. Используется, если на ПК уже есть PostgreSQL, чтобы не было конфликта.
 
@@ -42,15 +48,21 @@ services:
 ```bash
 docker-compose up -d
 ```
+
 `-d` - запуск в фоне
 
 ### Проверка работы контейнера
+
 ```bash
 docker ps
 ```
 
+---
+
 ## Подключение к БД из IDE
+
 Параметры подключения
+
 | Параметр | Значение      |
 | -------- | ------------- |
 | Host     | localhost     |
@@ -59,9 +71,12 @@ docker ps
 | User     | postgres      |
 | Password | 1234          |
 
-<br>После подключения можно писать SQL-запросы, создавать таблицы и наполнять их данными.
+После подключения можно писать SQL-запросы, создавать таблицы и наполнять их данными.
+
+---
 
 ## Создание и заполнение таблиц (пример)
+
 ```sql
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
@@ -75,12 +90,18 @@ INSERT INTO users (name, age) VALUES ('Maria', 30);
 SELECT * FROM users;
 ```
 
+---
+
 ## Остановка и удаление контейнера
+
 Остановить контейнер:
+
 ```bash
 docker-compose down
 ```
+
 Остановить + удалить данные:
+
 ```bash
 docker-compose down -v
 ```
