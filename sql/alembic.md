@@ -18,10 +18,10 @@ alembic --version
 ## Инициализация
 
 ```bash
-alembic init alembic
+alembic init migrations
 ```
 
-Создаст папку `alembic/` и файл `alembic.ini`
+Создаст папку `migrations/` и файл `alembic.ini`
 
 ## Минимальная структура проекта
 
@@ -32,7 +32,11 @@ project/
 │   ├── manager.py      # engine + session
 │   └── models.py       # SQLAlchemy модели
 │
-├── alembic/            
+├── migrations/
+│   ├── versions/
+│   │   └── (здесь будут файлы миграций)
+│   ├── env.py
+│   └── script.py.mako            
 ├── alembic.ini         # конфиг alembic
 ```
 
@@ -216,3 +220,4 @@ alembic upgrade head
 2. Генерируешь миграцию: `alembic revision --autogenerate -m "что изменил"`
 
 3. Применяешь: `alembic upgrade head`
+
