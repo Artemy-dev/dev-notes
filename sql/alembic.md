@@ -44,8 +44,8 @@ project/
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-DATABASE_URL = "postgresql+psycopg2://postgres:1234@localhost:5432/data"
-# postgres - логин
+DATABASE_URL = "postgresql+psycopg2://admin:1234@localhost:5432/data"
+# admin - логин
 # 1234 - пароль
 # 5432 - порт
 # data - имя БД
@@ -83,7 +83,7 @@ sqlalchemy.url = driver://user:pass@localhost/dbname
 
 #### Заменить на:
 ```tex
-sqlalchemy.url = postgresql+psycopg2://postgres:1234@localhost:5432/data
+sqlalchemy.url = postgresql+psycopg2://admin:1234@localhost:5432/data
 ```
 
 #### В `alembic/env.py` импортировать Base
@@ -214,4 +214,5 @@ alembic upgrade head
 
 1. Меняешь models.py
 2. Генерируешь миграцию: `alembic revision --autogenerate -m "что изменил"`
+
 3. Применяешь: `alembic upgrade head`
