@@ -89,6 +89,7 @@ sqlalchemy.url = driver://user:pass@localhost/dbname
 ```tex
 sqlalchemy.url = postgresql+psycopg2://admin:1234@localhost:5432/data
 ```
+*psycopg2* - драйвер для PostgreSQL
 
 #### В `alembic/env.py` импортировать Base
 ```python
@@ -220,4 +221,5 @@ alembic upgrade head
 2. Генерируешь миграцию: `alembic revision --autogenerate -m "что изменил"`
 
 3. Применяешь: `alembic upgrade head`
+
 
