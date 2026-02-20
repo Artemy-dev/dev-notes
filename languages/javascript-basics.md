@@ -2,8 +2,8 @@
 
 ### Необходимый софт
 
-**VS Code** - редактор кода (скачать с официального сайта)[https://code.visualstudio.com/].
-**Node.js** - среда выполнения JavaScript на компьютере (скачать с официального сайта)[https://nodejs.org/en/download].
+**VS Code** - редактор кода [скачать с официального сайта](https://code.visualstudio.com/).
+<br>**Node.js** - среда выполнения JavaScript на компьютере [скачать с официального сайта](https://nodejs.org/en/download).
 
 ### Проверка установки Node.js
 Открыть терминал (командную строку) и выполнить:
