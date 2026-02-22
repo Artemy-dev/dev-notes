@@ -221,3 +221,104 @@ console.log(true / 2)          // 0.5
 ```
 
 ---
+
+## Управление потоком
+
+---
+
+### if / else if / else
+
+```javascript
+const num = 15;
+
+if (num == 0) {
+    console.log(`Число ноль`);
+} else if (num % 2 == 0) {
+    console.log(`Число ${num} четное`);
+} else {
+    console.log(`Число ${num} нечетное`);
+}  // Выведет: Число 15 нечетное
+```
+
+---
+
+### Switch
+
+```javascript
+let role = 'admin';
+
+switch (role) {
+    case 'guest':
+        console.log('Гость');
+        break;
+    case 'user':
+        console.log('Пользователь');
+        break;
+    case 'admin':
+    case 'administrator':
+        console.log('Администратор');
+        break;
+    default:
+        console.log('Ошибка');
+}
+
+// Вывод: Администратор
+```
+
+```javascript
+let num = -7;
+
+switch (true) {
+    case num === 0:  // true === (num === 0)
+        console.log('Ноль');
+        break;
+    case num > 0:
+        console.log('Положительное число');
+        break;
+    case num < 0:
+        console.log('Отрицательное число');
+        break;
+}
+
+// Вывод: Отрицательное число
+```
+
+---
+
+### Тернарный оператор ( условие ? a : b; )
+
+Вариант 1.
+```javascript
+let balance = 500;
+let price = 300;
+balance > price ? console.log('Message: Покупка совершена') : console.log('Message: Недостаточно средств');
+// Вывод: Message: Покупка совершена
+```
+
+Вариант 2.
+```javascript
+let balance = 500;
+let price = 300;
+console.log(`Message: ${balance > price ? 'Покупка совершена' : 'Недостаточно средств'}`);
+```
+
+Вариант 3.
+```javascript
+let balance;
+let price1 = 300;
+let price2 = 100;
+
+balance = 500;
+console.log(balance > price1 ? 'Куплен товар 1.' : balance > price2 ? 'Куплен товар 2.' : 'Недостаточно средств');
+// Куплен товар 1.
+
+balance = 250;
+console.log(balance > price1 ? 'Куплен товар 1.' : balance > price2 ? 'Куплен товар 2.' : 'Недостаточно средств');
+// Куплен товар 2.
+
+balance = 50;
+console.log(balance > price1 ? 'Куплен товар 1.' : balance > price2 ? 'Куплен товар 2.' : 'Недостаточно средств');
+// Недостаточно средств
+```
+
+---
