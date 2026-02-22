@@ -322,3 +322,115 @@ console.log(balance > price1 ? 'Куплен товар 1.' : balance > price2 ?
 ```
 
 ---
+
+## Булева логика (общий раздел математической логики и дискретной математики)
+
+#### AND (И) &&
+
+Истина только если оба операнда (A и B) истинны.
+
+```text
+A B | Результат
+0 0 | 0
+0 1 | 0
+1 0 | 0
+1 1 | 1
+```
+
+#### OR (ИЛИ) ||
+
+Истина если хотя бы один операнд (A или B) истинен.
+
+```text
+A B | Результат
+0 0 | 0
+0 1 | 1
+1 0 | 1
+1 1 | 1
+```
+
+#### NOT (НЕ) !
+
+Инверсия значения.
+
+```text
+A | результат
+0 | 1
+1 | 0
+```
+
+Приоритет операций: NOT → AND → OR
+
+#### Примеры:
+
+- 1 AND 0 = 0
+- 1 OR 0 = 1
+- NOT 1 = 0
+
+---
+
+### Логичесие операторы
+
+```javascript
+const a = false;
+const b = true;
+console.log(`${a} И ${b}: ${a && b}`);    // false И true: false
+console.log(`${a} ИЛИ ${b}: ${a || b}`);  // false ИЛИ true: true
+console.log(`Инвертируем ${a}: ${!a}`);   // Инвертируем false: true
+console.log(`!${a} (false → true) И ${b}: ${!a && b}`);  // !false (false → true) И true: true
+```
+
+---
+
+### Операторы с другими типами
+
+```javascript
+let a;
+let username = a || 'Гость';
+console.log(username);  // Гость
+
+a = 'User';
+username = a || 'Гость';
+console.log(username);  // User
+```
+
+```javascript
+let password = '1234';
+let login = 'admin';
+let getLogin = password === '1234' && login;
+console.log(getLogin);  // admin
+```
+
+```javascript
+let password = 'abcd';
+let login = 'admin';
+let getLogin = password === '1234' && login;
+console.log(getLogin);  // false
+```
+
+---
+
+### Оператор нулевого слияния ( ?? )
+
+```javascript
+let username;
+
+console.log(username || 'Гость');  // Гость
+
+username = '';
+console.log(username || 'Гость');  // Гость
+username = 0;
+console.log(username || 'Гость');  // Гость
+username = 'admin';
+console.log(username || 'Гость');  // admin
+
+username = '';
+console.log(username ?? 'Гость');  // (пустая строка)
+username = 0;
+console.log(username ?? 'Гость');  // 0
+username = 'admin';
+console.log(username ?? 'Гость');  // admin
+```
+
+---
+
