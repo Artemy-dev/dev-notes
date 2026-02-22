@@ -434,3 +434,129 @@ console.log(username ?? 'Гость');  // admin
 
 ---
 
+## Функции
+
+---
+
+### Введение в функции
+
+```javascript
+/* 
+Функция конвертирует гигабайты в мегабайты.
+function - ключевое слово
+fromGbToMb - название функции
+gb - аргумет функции
+return - возвращаемое значение
+fromGbToMb() - вызов функции
+*/
+
+function fromGbToMb(gb) {
+    const mb = gb * 1024;
+    return `${gb} Gb = ${mb} Mb`;
+}
+
+let res = fromGbToMb(5);
+console.log(res);  // 5 Gb = 5120 Mb
+console.log(fromGbToMb(1));  // 1 Gb = 1024 Mb
+```
+
+---
+
+### Анонимные функции
+
+```javascript
+// Записываем фунцию в переменную
+const fromGbToMb = function (gb) {
+    const mb = gb * 1024;
+    return `${gb} Gb = ${mb} Mb`;
+}
+
+console.log(fromGbToMb(5));  // 5 Gb = 5120 Mb
+```
+
+---
+
+### Стрелочные функции
+
+```javascript
+// переменная = параметр => результат;
+const fromGbToMb = gb => `${gb} Gb = ${gb * 1024} Mb`;
+console.log(fromGbToMb(5));  // 5 Gb = 5120 Mb
+console.log(fromGbToMb(2));  // 2 Gb = 2048 Mb
+
+// переменная = (параметры) => {блок кода}
+const add = (a, b) => {
+    console.log(`Сума чисел ${a} и ${b}:`);
+    return a + b;
+}
+console.log(add(7, 9));
+/*
+Вывод:
+Сума чисел 7 и 9:
+16
+*/
+```
+
+---
+
+### Параметры по умолчанию
+
+```javascript
+function pow(n, p=2) {
+    return n ** p;
+}
+
+console.log(pow(5));     // 25
+console.log(pow(5, 3));  // 125
+```
+
+---
+
+### Условия в функциях
+
+Вариант 1.
+
+```javascript
+function adminPanel(role) {
+    if (role === 'admin') {
+        return true;
+    }
+    return false;
+}
+
+console.log(adminPanel('user'));   // false
+console.log(adminPanel('admin'));  // true
+```
+
+Вариант 2.
+
+```javascript
+// Стерлочна функция + Тернарный оператор (не рекомендуется из-за плохой читаемости)
+const adminPanel = role => role === 'admin' ? true : false;
+console.log(adminPanel('user'));   // false
+console.log(adminPanel('admin'));  // true
+```
+
+---
+
+### Функции в функциях
+
+```javascript
+function addition(a, b) {
+    return a + b;
+}
+
+function subtraction(a, b) {
+    return a - b;
+}
+
+function calculate(a, b) {
+    add = addition(a, b);
+    sub = subtraction(a, b);
+    return `Сумма чисел: ${add}. Разница чисел: ${sum}.`;
+}
+
+console.log(calculate(5, 3));  // Сумма чисел: 8. Разница чисел: 2.
+```
+
+---
