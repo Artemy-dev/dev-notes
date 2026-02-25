@@ -560,3 +560,146 @@ console.log(calculate(5, 3));  // Сумма чисел: 8. Разница чи�
 ```
 
 ---
+
+## Массивы
+
+```javascript
+const arr1 = ['a', 'b', 'c']           // Первый способ объявить массив
+const arr2 = new Array('a', 'b', 'c')  // Второй способ объявить массив
+console.log(arr1)  // [ 'a', 'b', 'c' ]
+console.log(arr1)  // [ 'a', 'b', 'c' ]
+
+const list = [25, 'text', true, ['a', 'b', 'c']];
+
+console.log(list);         // [ 25, 'text', true, [ 'a', 'b', 'c' ] ]
+console.log(list.length);  // 4 - длина массива
+
+console.log(list[1]);     // text
+console.log(list.at(1));  // text
+
+console.log(list[3]);         // [ 'a', 'b', 'c' ]
+console.log(list.at(-1));     // [ 'a', 'b', 'c' ]
+console.log(list[3][0]);      // a
+console.log(list.at(-1)[0]);  // a
+```
+
+---
+
+### Управление элементами массива
+
+```javascript
+let list = ['a', 'b', 'c'];
+
+// Индексы
+list[1] = 5;
+console.log(list);  // [ 'a', 5, 'c' ]
+list[3] = 'd';
+console.log(list);  // [ 'a', 5, 'c', 'd' ]
+list[5] = 'text';
+console.log(list);  // [ 'a', 5, 'c', 'd', <1 empty item>, 'text' ]
+
+list = [1, 2, 3];
+
+// Методы
+list.push(4);          // .push() - добавляет элемент в конец массива
+console.log(list);     // [ 1, 2, 3, 4 ]
+list.unshift(0);       // .unshift() - добавляет элемент в начало массива
+console.log(list);     // [ 0, 1, 2, 3, 4 ]
+let a = list.pop();    // .pop() - удаляет последний элемент массива и сохр. его в переменную
+console.log(list);     // [ 0, 1, 2, 3 ]
+console.log(a);        // 4
+let b = list.shift();  // .shift() - удаляет первый элемент массива и сохр. его в переменную
+console.log(list);     // [ 1, 2, 3 ]
+console.log(b);        // 0
+```
+
+---
+
+### Поиск элемента
+
+```javascript
+let list = ['a', 'b', 'c'];
+
+console.log(list.indexOf('c'));   // 2 - индекс элемента 'c'
+console.log(list.indexOf('e'));   // -1 - если элемента нет в массиве
+console.log(list.includes('a'));  // true
+```
+
+---
+
+### Slice, splice, concat, reverse
+
+```javascript
+let list = ['a', 'b', 'c', 'd', 'e'];
+
+console.log(list.slice(2));     // [ 'c', 'd', 'e' ] - Возвращяет часть массива с указанного индекса
+console.log(list.slice(1, 3));  // [ 'b', 'c' ]
+console.log(list.slice(-1));    // [ 'e' ]
+console.log(list.slice(-2));    // [ 'd', 'e' ]
+console.log(list);              // [ 'a', 'b', 'c', 'd', 'e' ] - Исходный массив не изменился
+```
+
+```javascript
+let list = ['a', 'b', 'c', 'd', 'e'];
+console.log(list.splice(2));  // [ 'c', 'd', 'e' ]
+console.log(list);            // [ 'a', 'b' ] - Метод .splice() изменяет исхоный массив
+
+let list = ['a', 'b', 'c', 'd', 'e'];
+console.log(list.splice(2, 2));  // [ 'c', 'd' ] - Срез со 2 элемента, 2 - элемента
+console.log(list);               // [ 'a', 'b', 'e' ]
+```
+
+```javascript
+let list1 = ['a', 'b', 'c'];
+let list2 = ['d', 'e', 'f'];
+let newList = list1.concat(list2)
+
+console.log(list1);    // [ 'a', 'b', 'c' ]
+console.log(list2);    // [ 'd', 'e', 'f' ]
+console.log(newList);  // [ 'a', 'b', 'c', 'd', 'e', 'f' ]
+```
+
+```javascript
+let list = ['a', 'b', 'c', 'd', 'e'];
+list.reverse();
+console.log(list);  // [ 'e', 'd', 'c', 'b', 'a' ] - Изменяет исходный массив
+```
+
+---
+
+### Из строки в массив и обратно
+
+```javascript
+// Строка → Список
+const namesString = 'Tim, Bob, John';
+const namesList = namesString.split(', ');
+console.log(namesList);  // [ 'Tim', 'Bob', 'John' ]
+
+// Список → Строка
+const numsList = [1, 2, 3, 4, 5];
+const numsString = numsList.join(', ');
+console.log(numsString);  // 1, 2, 3, 4, 5
+```
+
+---
+
+### Деструктуризация
+
+```javascript
+const userInfo = ['Admin', '1234'];
+const [login, passwor] = userInfo;  // [login, passwor] - список переменных
+console.log(login);    // Admin
+console.log(passwor);  // 1234
+```
+
+---
+
+### Rest оператор
+
+```javascript
+const nums = [1, 2, 3, 4, 5];
+const [a, b, ...rest] = nums;
+console.log(rest);  // [ 3, 4, 5 ]
+```
+
+---
