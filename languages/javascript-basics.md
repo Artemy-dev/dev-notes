@@ -855,3 +855,98 @@ for(let i in chars) {       // in - итерируется по индексам
 ```
 
 ---
+
+## Функции высшего порядка
+
+**Функция первого класса** - это функция, которую можно хранить в переменной.
+
+```javascript
+const func = (num) => num++;
+```
+
+**Функции высшего порядка** - это функция, которая принимает другие функции как аргумент и возвращает другие функции.
+
+```javascript
+function example(func) {  // Принимает функцию func
+
+}
+```
+
+```javascript
+function example() {
+    return func;  // Возвращяет функцию func
+}
+```
+
+---
+
+### Callback
+
+```javascript
+function addition(a, b) {
+    return a + b;
+}
+
+function subtraction(a, b) {
+    return a - b;
+}
+
+// функция высшего порядка
+function calculate(a, b, callback_func) {
+    console.log(callback_func.name);  // .name - возвращяет имя функции
+    const result = callback_func(a, b)
+    return result
+}
+
+console.log(calculate(5, 3, addition));
+console.log(calculate(5, 3, subtraction));
+
+/*
+Вывод:
+addition
+8
+subtraction
+2
+*/
+```
+
+---
+
+### Возврат функции
+
+Вариант 1.
+
+```javascript
+function pow(p) {
+    return function (n) {
+        return n**p;
+    }
+}
+
+const power = pow(2);   // Переменная power - это функция, замкнувшая p = 2 (power хранит значение p = 2, хотя pow уже отработала)
+console.log(power(5));  // 25
+
+console.log(pow(2)(5)); // 25
+/*
+pow(2) → возвращает функцию с зафиксированным p = 2
+(5) → передает n = 5 в эту функцию
+*/
+```
+
+Вариант 2.
+
+```javascript
+// function pow(p) {
+//     return function (n) {
+//         return n**p;
+//     }
+// }
+
+// console.log(pow(2)(5)); // 25
+
+// Стрелочная функция
+const pow = p => n => n**p;
+console.log(pow(2)(5)); // 25
+```
+
+---
