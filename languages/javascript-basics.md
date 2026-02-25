@@ -703,3 +703,155 @@ console.log(rest);  // [ 3, 4, 5 ]
 ```
 
 ---
+
+## Циклы
+
+---
+
+### Цикл for
+
+```javascript
+for(let i = 1; i < 4; i++) {
+    console.log(i);  // Выведет 1, 2, 3 (каждое число на новой строке)
+}
+```
+
+---
+
+### Break и continue
+
+```javascript
+const nums = ['a', 'b', 'c'];
+
+for(let i = 0; i < nums.length; i++) {
+    console.log(nums[i]);  // Выведет a, b, c
+}
+
+// continue - пропуск итерации
+for(let i = 0; i < nums.length; i++) {
+    if (nums[i] === 'b') {
+        continue;
+    }
+    console.log(nums[i]);  // Выведет a, c
+}
+
+// break - прервать цикл
+for(let i = 0; i < nums.length; i++) {
+    if (nums[i] === 'c') {
+        break;
+    }
+    console.log(nums[i]);  // Выведет a, b
+}
+```
+
+---
+
+### Цикл в цикле
+
+Вариант 1.
+
+```javascript
+for (let a = 1; a < 3; a++) {
+    for(let b = 1; b < 4; b++) {
+        console.log(`a = ${a}; b = ${b}`)
+    }
+}
+/*
+a = 1; b = 1
+a = 1; b = 2
+a = 1; b = 3
+a = 2; b = 1
+a = 2; b = 2
+a = 2; b = 3
+*/
+```
+
+Вариант 2.
+
+```javascript
+const list = [ [1, 'Tim'], [2, 'Bob'], [3, 'John'] ]
+for(let i = 0; i < list.length; i++) {
+    for(let j = 0; j < list[i].length; j++) {
+        console.log(list[i][j])
+    }
+}
+/*
+1
+Tim
+2
+Bob
+3
+John
+*/
+```
+
+---
+
+### Цикл while
+
+Вариант 1.
+
+```javascript
+// for(let i = 1; i < 4; i++) {
+//     console.log(i);  // Выведет 1, 2, 3 (каждое число на новой строке)
+// }
+
+let i = 1;
+while (i < 4) {
+    console.log(i);  // Выведет 1, 2, 3 (каждое число на новой строке)
+    i++;
+}
+```
+
+Вариант 2.
+
+```javascript
+const nums = ['a', 'b', 'c'];
+
+// for(let i = 0; i < nums.length; i++) {
+//     if (nums[i] === 'c') {
+//         break;
+//     }
+//     console.log(nums[i]);  // Выведет a, b
+// }
+
+let i = 0
+while (nums[i] != 'c') {
+    console.log(nums[i]);  // Выведет a, b
+    i++;
+}
+```
+
+---
+
+### Цикл do while
+
+```javascript
+let i = 1;
+do {
+    console.log(i);  // Сначала выполниться блок do (минимум один раз)
+    i++
+} while(i < 0);      // Только потом будет проверка условия
+```
+
+---
+
+### Циклы for of и for in
+
+```javascript
+const chars = ['a', 'b', 'c'];
+
+// for(let i = 0; i < nums.length; i++) {
+//     console.log(nums[i]);  // Выведет a, b, c
+// }
+
+for(let i of chars) {       // of - итерируется по значениям массива
+    console.log(i);         // Выведет a, b, c
+}
+
+for(let i in chars) {       // in - итерируется по индексам массива
+    console.log(chars[i]);  // Выведет a, b, c
+}
+```
+
+---
