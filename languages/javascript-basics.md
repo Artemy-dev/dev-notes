@@ -853,6 +853,21 @@ for(let i in chars) {       // in - итерируется по индексам
     console.log(chars[i]);  // Выведет a, b, c
 }
 ```
+Вывод индекса и значения с помощью `.entries()`
+
+```javascript
+const chars = ['a', 'b', 'c']
+
+for (let [i, v] of chars.entries()) {
+    console.log(`Индекс: ${i}, значение: ${v}`)
+}
+
+/* 
+Индекс: 0, значение: a
+Индекс: 1, значение: b
+Индекс: 2, значение: c 
+*/
+```
 
 ---
 
