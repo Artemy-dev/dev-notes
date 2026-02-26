@@ -856,10 +856,10 @@ for(let i in chars) {       // in - итерируется по индексам
 Вывод индекса и значения с помощью `.entries()`
 
 ```javascript
-const chars = ['a', 'b', 'c']
+const chars = ['a', 'b', 'c'];
 
 for (let [i, v] of chars.entries()) {
-    console.log(`Индекс: ${i}, значение: ${v}`)
+    console.log(`Индекс: ${i}, значение: ${v}`);
 }
 
 /* 
