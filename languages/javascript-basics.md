@@ -965,3 +965,211 @@ console.log(pow(2)(5)); // 25
 ```
 
 ---
+
+## Итерации в массивах
+
+---
+
+### forEach
+
+`forEach` - выполняет переданную функцию для каждого элемента массива без создания нового массива (для побочных действий).
+
+```javascript
+const chars = ['a', 'b', 'c']
+
+// for (let [i, v] of chars.entries()) {
+//     console.log(`Индекс: ${i}, значение: ${v}`);
+// }
+
+chars.forEach((v, i) => {
+    console.log(`Индекс: ${i}, значение: ${v}`);
+})
+
+/* 
+Индекс: 0, значение: a
+Индекс: 1, значение: b
+Индекс: 2, значение: c 
+*/
+```
+
+---
+
+### map
+
+`map` - создает новый массив из результатов вызова функции для каждого элемента (для преобразования данных).
+
+```javascript
+const nums = [5, 3, -2, 7, -6, 3];
+
+const numsPow = nums.map((v, i) => v**2);
+console.log(nums);     // [ 5, 3, -2, 7, -6, 3 ]
+console.log(numsPow);  // [ 25, 9, 4, 49, 36, 9 ]
+```
+
+---
+
+### filter
+
+`filter` - оставляет элементы, которые удовлетворяют условию.
+
+```javascript
+const nums = [5, 3, -2, 7, -6, 3];
+
+const positiveNums = nums.filter(v => v > 0);
+console.log(positiveNums);  // [ 5, 3, 7, 3 ] 
+```
+
+---
+
+### filter + map
+
+```javascript
+const nums = [5, 3, -2, 7, -6, 3];
+
+// const numsPow = nums.map(v => v**2);
+// const positiveNums = nums.filter(v => v > 0);
+// console.log(numsPow);       // [ 25, 9, 4, 49, 36, 9 ]
+// console.log(positiveNums);  // [ 5, 3, 7, 3 ] 
+
+const numsPositivePow = nums
+    .filter(v => v > 0)
+    .map(v => v**2);
+
+console.log(numsPositivePow);  // [ 25, 9, 49, 9 ]
+```
+
+---
+
+### reduce
+
+```javascript
+const nums = [5, 3, -2, 7, -6, 3];
+
+// Считаем сумму всех чисел в списке
+// let res = 0;
+// for (value of nums) {
+//     res += value;
+// }
+// console.log(res);  // 10
+
+const res = nums.reduce((acc, value, i) => {
+    console.log(`Итерация: ${i} - acc: ${acc}, value: ${value}`);
+    return acc += value;
+}, 0);
+
+/*
+Итерация: 0 - acc: 0, value: 5
+Итерация: 1 - acc: 5, value: 3
+Итерация: 2 - acc: 8, value: -2
+Итерация: 3 - acc: 6, value: 7
+Итерация: 4 - acc: 13, value: -6
+Итерация: 5 - acc: 7, value: 3
+*/
+
+console.log(res);  // 10
+```
+
+---
+
+### find и findIndex
+
+`find` - ищет первый встечающийся элемент в массиве, удовлетворяющий условию.
+`findIndex` - ищет первый встечающийся элемент в массиве, удовлетворяющий условию и возвращяет его индекс
+
+```javascript
+const nums = [5, 3, -2, 7, -6, 3, 10];
+
+console.log(nums.find(i => i > 5));         // 7
+console.log(nums.findIndex(i => i > 5));    // 3 - Индекс элемента 7
+console.log(nums.findIndex(i => i === 7));  // 3
+console.log(nums.findIndex(i => i === 8));  // -1 (если такого элемента нет в массиве)
+```
+
+---
+
+### some
+
+`some` - проверяет массив на наличие элемента.
+
+```javascript
+const nums = [5, 3, -2, 7, -6, 3, 10];
+const chars = ['a', 'b', 'c'];
+
+console.log(nums.some(i => i === 3));     // true
+console.log(nums.some(i => i === 4));     // false
+console.log(chars.some(i => i === 'c'));  // true
+console.log(chars.some(i => i === 'e'));  // false
+```
+
+---
+
+### flat и flatMap
+
+`flat` - превращает многомерный массив в плоский массив. В качестве аргумента передает число уровней вложенности (по умолчанию 1).
+
+```javascript
+const matrix = [[1, [2, 2.5]], [3, 4]];
+
+console.log(matrix);                // [ [ 1, [ 2, 2.5 ] ], [ 3, 4 ] ]
+console.log(matrix.flat());         // [ 1, [ 2, 2.5 ], 3, 4 ]
+console.log(matrix.flat().flat());  // [ 1, 2, 2.5, 3, 4 ]
+console.log(matrix.flat(2));        // [ 1, 2, 2.5, 3, 4 ]
+```
+
+`flatMat` - сначала преобразуее данные (map), потом превращает многомерный массив в плоский массив (flat).
+
+```javascript
+let matrix = [[1, 2], [3, 4]];
+
+// console.log(matrix);                                      // [ [ 1, 2 ], [ 3, 4 ] ]
+// console.log(matrix = matrix.map(i => i.concat(i[1]+1)));  // [ [ 1, 2, 3 ], [ 3, 4, 5 ] ]
+// console.log(matrix.flat());                               // [ 1, 2, 3, 3, 4, 5 ]
+
+console.log(matrix.flatMap(i => i.concat(i[1]+1)));  // [ 1, 2, 3, 3, 4, 5 ]
+```
+
+---
+
+### sort
+
+```javascript
+const names = ['Tim', 'Bob', 'Ann'];
+names.sort();
+const nums = [4, -3, 6, -8, 1, 2];
+nums.sort();
+
+console.log(names);  // [ 'Ann', 'Bob', 'Tim' ]
+console.log(nums);   // [ -3, -8, 1, 2, 4, 6 ] - сортиует как строки (по умолчанию)
+
+// Сортировка по возрастанию
+nums.sort((a, b) => a - b);
+console.log(nums);   // [ -8, -3, 1, 2, 4, 6 ]
+
+// Сортировка по убыванию
+nums.sort((a, b) => b - a);
+console.log(nums);   // [ 6, 4, 2, 1, -3, -8 ]
+```
+
+---
+
+### Быстрое создание массива
+
+Вариант 1.
+
+```javascript
+const list = new Array(5);
+console.log(list);   // [ <5 empty items> ]
+// list.fill(1);
+// console.log(list);   // [ 1, 1, 1, 1, 1 ]
+list.fill(1, 0, 3);  // 1 - элемент для заполнения, 0 - индекс(старт), 3 - колиество элементов
+console.log(list);   // [ 1, 1, 1, <2 empty items> ]
+```
+
+Вариант 2.
+
+```javascript
+const list = Array.from({length: 5}, (c, i) => i + 1);
+console.log(list);  // [ 1, 2, 3, 4, 5 ]
+```
+
+---
