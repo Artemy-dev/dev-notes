@@ -85,14 +85,13 @@ let age = 30;
 ---
 
 ### Операторы
-*(Функция в JS)*
 - **Операторы присваивания** ( `=`, `+=`, `-=`, `*=`, `/=` )
 - **Операторы сравнения** ( `==`, `===`, `!=`, `!==`, `>`, `<`, `>=`, `<=` )
 - **Арифметические операторы** ( `+`, `-`, `*`, `/`, `%`, `**` )
 - **Битовые операторы** ( `&`, `|`, `^`, `~`, `<<`, `>>`, `>>>` )
 - **Логические операторы** ( `&&`, `||`, `!` )
 - **Строковые операторы** ( `+` (конкатенация), `+=` )
-- **Тернарный оператор** ( `ondition ? a : b` )
+- **Тернарный оператор** ( `condition ? a : b` )
 - **Оператор запятая** ( `,` )
 - **Унарные операторы** ( `+`, `-`, `++`, `--`, `typeof`, `delete` )
 - **Операторы отношения** ( `in`, `instanceof` )
@@ -169,13 +168,13 @@ let text2 = `abc`;      // Строка (string).
 let isAdmin = true;     // Булевый (логический) тип (boolean).
 let info;               // Не заданное значение (undefined). Переменная объявлена, но значение не было задано.
 let about = undefined;  // Не заданное значение (undefined).
-let data = null;        // Пустое знаение (object).
+let data = null;        // Примитив.
 console.log(info);    // undefined
 console.log(about);   // undefined
 console.log(data);    // null
 const bigNum = BigInt(999999999999999);  // Для работы с большим числами (bigint).
 console.log(bigNum);  // 999999999999999n
-const str = Symbol('text');  // Уникальное неизменное значене (symbol).
+const str = Symbol('text');  // Уникальный идентификатор (symbol).
 
 console.log(typeof name);    // typeof - оператор для определения типа.
 ```
@@ -501,7 +500,7 @@ const add = (a, b) => {
 console.log(add(7, 9));
 /*
 Вывод:
-Сума чисел 7 и 9:
+Сумма чисел 7 и 9:
 16
 */
 ```
@@ -560,9 +559,9 @@ function subtraction(a, b) {
 }
 
 function calculate(a, b) {
-    add = addition(a, b);
-    sub = subtraction(a, b);
-    return `Сумма чисел: ${add}. Разница чисел: ${sum}.`;
+    const add = addition(a, b);
+    const sub = subtraction(a, b);
+    return `Сумма чисел: ${add}. Разница чисел: ${sub}.`;
 }
 
 console.log(calculate(5, 3));  // Сумма чисел: 8. Разница чисел: 2.
@@ -701,9 +700,9 @@ console.log(numsString);  // 1, 2, 3, 4, 5
 
 ```javascript
 const userInfo = ['Admin', '1234'];
-const [login, passwor] = userInfo;  // [login, passwor] - список переменных
+const [login, password] = userInfo;  // [login, passwor] - список переменных
 console.log(login);    // Admin
-console.log(passwor);  // 1234
+console.log(password);  // 1234
 ```
 
 ---
@@ -890,7 +889,7 @@ for (let [i, v] of chars.entries()) {
 **Функция первого класса** - это функция, которую можно хранить в переменной.
 
 ```javascript
-const func = (num) => num++;
+const func = (num) => num + 1;
 ```
 
 **Функции высшего порядка** - это функция, которая принимает другие функции как аргумент и возвращает другие функции.
@@ -1130,7 +1129,7 @@ console.log(matrix.flat().flat());  // [ 1, 2, 2.5, 3, 4 ]
 console.log(matrix.flat(2));        // [ 1, 2, 2.5, 3, 4 ]
 ```
 
-`flatMat` - сначала преобразуее данные (map), потом превращает многомерный массив в плоский массив (flat).
+`flatMap` - сначала преобразуее данные (map), потом превращает многомерный массив в плоский массив (flat).
 
 ```javascript
 let matrix = [[1, 2], [3, 4]];
