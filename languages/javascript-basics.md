@@ -684,6 +684,11 @@ const namesString = 'Tim, Bob, John';
 const namesList = namesString.split(', ');
 console.log(namesList);  // [ 'Tim', 'Bob', 'John' ]
 
+const userInfo = 'admin 1234';
+const [login, password] = userInfo.split(' ')
+console.log(login);     // admin
+console.log(password);  // 1234
+
 // Список → Строка
 const numsList = [1, 2, 3, 4, 5];
 const numsString = numsList.join(', ');
