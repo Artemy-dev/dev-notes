@@ -1187,3 +1187,59 @@ console.log(list);  // [ 1, 2, 3, 4, 5 ]
 ```
 
 ---
+
+## Работа со строками
+
+---
+
+### Базовые методы
+
+```javascript
+const ide = 'Visual Studio';
+
+console.log(ide[0] + ide[7] + 'Code');                // VSCode
+console.log(ide.charAt(0) + ide.charAt(7) + 'Code');  // VSCode
+
+console.log(ide.length);            // 13 - количнство символов в строке
+console.log(ide.indexOf('i'));      // 1 - индекс буквы i (первое вхождение)
+console.log(ide.lastIndexOf('i'));  // 11 - индекс буквы i (последнее вхождение)
+console.log(ide.includes('S'));     // true (проверка, включает ли строка Visual Studio подстроку S)
+console.log(ide.slice(7));          // Studio (обрезает строку до указанного индекса)
+console.log(ide.slice(7, 11));      // Stud
+```
+
+---
+
+### Преобразование строки
+
+```javascript
+const ide = 'Visual Studio';
+
+console.log(ide.toLowerCase());         // visual studio
+console.log(ide.toUpperCase());         // VISUAL STUDIO
+
+console.log(ide.replace('i', '*'));     // V*sual Studio (заменяет только первое вхождение)
+console.log(ide.replace(/i/g, '*'));    // V*sual Stud*o (/.../g - для поиска всех вхождений)
+console.log(ide.replaceAll('i', '*'));  // V*sual Stud*o
+
+const text = '   Hello, World!       '
+console.log(text);         //    Hello, World!
+console.log(text.trim());  // Hello, World! (удалены лишние пробелы в начале и в конце)
+```
+
+---
+
+### Добавление строк
+
+```javascript
+const game = 'Metro 2033';
+console.log(game
+    .padStart(15, '=')  // Добавляет '=' к строке пока общее количество символов не станет 15.
+    .padEnd(20, '=')
+);  // =====Metro 2033=====
+
+const phone = '+7(909)1234567';
+console.log(phone.slice(-4).padStart(phone.length, '*'));  // **********4567
+```
+
+---
