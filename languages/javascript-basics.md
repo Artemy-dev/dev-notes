@@ -1242,3 +1242,158 @@ console.log(phone.slice(-4).padStart(phone.length, '*'));  // **********4567
 ```
 
 ---
+
+## Объекты
+
+---
+
+### Создание и обращение к элементам
+
+```javascript
+const userInfo = {
+    login: 'admin',
+    password: '1234',
+};
+
+console.log(userInfo);              // { login: 'admin', password: '1234' }
+console.log(userInfo.login);        // admin (рекомендуется)
+console.log(userInfo['login']);     // admin
+
+userInfo.isAdmin = true;            // Добавили новое свойство объекта
+// userInfo['isAdmin'] = true;      // Добавили новое свойство объекта (вариант 2)
+userInfo.password = 'a1b2';         // Изменили свойство объекта
+// userInfo['password'] = 'a1b2';   // Изменили свойство объекта (вариант 2)
+console.log(userInfo);              // { login: 'admin', password: 'a1b2', isAdmin: true }
+
+// К свойству объекта рекомендуется обращяться в формате object.name
+```
+
+---
+
+### Методы объектов
+
+```javascript
+const user = {
+    login: 'user',
+    domain: '@example.com',
+    createEmail: function () {
+        console.log(this);  // {login: 'user', domain: '@example.com', createEmail: [Function: createEmail]}
+        return this.login + this.domain  // this ссылается на текущий объект (user)
+    },
+};
+
+console.log(user.createEmail());  // user@example.com
+```
+
+---
+
+### Итерирование по объекту
+
+```javascript
+const obj = {
+    objNum1: {num1: 10, num2: 20},
+    objNum2: {num1: 100, num2: 200}
+};
+
+let objList = Object.keys(obj);  // Object.keys() выведет список ключей объекта
+console.log(objList);            // [ 'objNum1', 'objNum2' ]
+console.log(objList.length);     // 2 - количество ключей в объекте
+
+// Вариант 1. Через in
+// let sum = 0;
+// for (k in obj) {
+//     sum += obj[k].num1;
+//     sum += obj[k].num2;
+// }
+// console.log(sum);   // 330 (сумма всех чисел в объекте)
+
+// Вариант 2. Через Object.keys()
+let sum = 0;
+for (k of Object.keys(obj)) {
+    sum += obj[k].num1;
+    sum += obj[k].num2;
+}
+console.log(sum);   // 330 (сумма всех чисел в объекте)
+```
+
+---
+
+### Деструктуризация, rest и spred
+
+```javascript
+// Деструктуризация массива
+const nums = [5, 10, 15];
+const [a, b, c] = nums;
+console.log(b);  // 10
+
+// Деструктуризация объекта
+const user = {
+    login: 'Admin',
+    role: 'administrator',
+    password: '1234',
+};
+const {login, password} = user;
+console.log(login);     // Admin
+console.log(password);  // 1234
+
+// rest (сбор остатка) оператор
+let userInfo = {
+    name: 'Tim',
+    age: 25,
+    city: 'Moscow',
+    email: 'tim@example.com'
+};
+const {email, ...userAbout} = userInfo;  // ... - rest оператор
+console.log(email);      // tim@example.com
+console.log(userAbout);  // { name: 'Tim', age: 25, city: 'Moscow' }
+
+//spread (разворот) оператор
+const skilsData = {
+    skils: ['Python', 'JS'],
+    exp: 2
+};
+console.log(userInfo);
+userInfo = {
+    ...user,
+    ...skilsData
+};
+console.log(userInfo);
+/*
+{
+  login: 'Admin',
+  role: 'administrator',
+  password: '1234',
+  skils: [ 'Python', 'JS' ],
+  exp: 2
+}
+*/
+```
+
+---
+
+### Optional chaining
+
+```javascript
+const users = {                         // Корневой объект users - Уровень вложенности: 0
+    tim_777: {                          // Свойство tim_777 - Уровень вложенности: 1
+        auth: {                         // Свойство auth - Уровень вложенности: 2
+            email: 'tim@example.com',   // Свойства email и password - Уровень вложенности: 3
+            password: '1234'
+        }
+    },
+    usr_583: {
+
+    }
+};
+// console.log(users.tim_777.auth.email);  // tim@example.com
+// console.log(users.usr_583.auth);        // undefined
+// console.log(users.usr_583.auth.email);  // Ошибка TypeError
+
+// (?.) Опциональное построение цепочки / Optional chaining
+console.log(users?.tim_777?.auth?.email);  // tim@example.com
+console.log(users?.usr_583?.auth);         // undefined (usr_583 - есть, auth - отсутствует)
+console.log(users?.usr_583?.auth?.email);  // undefined (usr_583 - есть, auth и email - отсутствуют)
+console.log(users?.gst_125?.auth?.email);  // undefined (gst_125, auth и email - отсутствуют)
+```
+
+---
