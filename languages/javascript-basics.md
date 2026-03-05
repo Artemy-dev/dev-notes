@@ -1415,7 +1415,7 @@ console.log(sum);   // 330 (сумма всех чисел в объекте)
 
 ---
 
-### Деструктуризация, rest и spred
+### Деструктуризация, rest и spread
 
 ```javascript
 // Деструктуризация массива
@@ -1600,7 +1600,9 @@ console.log(b);  // 3
 
 ---
 
-### Heap (куча) + Object.assign()
+### Heap (куча) + Object.assign() / spread-оператор
+
+**Object.assign()**
 
 ```javascript
 const a = {num: 5};
@@ -1643,4 +1645,14 @@ console.log(b.num);  // 3
 │ a         │ 0xFF1    │ 0x001   │   │ 0x001   │ {num: 5} │ ← не изменилось!
 │ b         │ 0xFF2    │ 0x002   │   │ 0x002   │ {num: 3} │ ← изменилось!
 └───────────┴──────────┴─────────┘   └─────────┴──────────┘
+```
+
+**spread-оператор**
+
+```javascript
+const a = {num: 5};
+const b = {...a};
+b.num = 3;
+console.log(a.num);  // 5
+console.log(b.num);  // 3
 ```
