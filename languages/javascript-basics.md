@@ -1778,3 +1778,157 @@ sum(3, 5, 7);
 ```
 
 ---
+
+## Управление this
+
+---
+
+### Сокращенный синтаксис методов (Enhanced Object Literals)
+
+```javascript
+'use strict';
+
+const num = 5;
+const dict = {
+    num,  // num вместо num: num
+    getNum: function () {
+        return this.num;
+    },
+    getNumAlt() {  // getNumAlt() вместо getNumAlt: function()
+        return this.num;
+    }
+}
+
+console.log(dict.getNum());     // 5
+console.log(dict.getNumAlt());  // 5
+```
+
+---
+
+### Call, apply
+
+**call()** и **apply()** - позволяют вызвать функцию так, как будто она является методом указанного объекта.
+
+```javascript
+'use strict';
+
+const phone = {
+    model: 'iPhone 13',
+    defects: [],
+    addDefects(part, extent) {
+        this.defects.push({
+            part,
+            extent
+        });
+        console.log(this.defects);
+    }
+};
+
+phone.addDefects('диплей', 'трещина');  // [ { part: 'диплей', extent: 'трещина' } ]
+
+const laptop = {
+    model: 'MacBook',
+    defects: [],
+};
+
+// Вариант 1: Присваивание метода (копирование ссылки)
+// laptop.addDefects = phone.addDefects;  // копируем ссылку на метод
+// laptop.addDefects('клавиатура', 'залипает');  // [ { part: 'клавиатура', extent: 'залипает' } ]
+
+const addDefectsFunc = phone.addDefects;
+
+// Вариант 2: call() - передаем аргументы через запятую
+// addDefectsFunc.call(laptop, 'клавиатура', 'залипает');  // [ { part: 'клавиатура', extent: 'залипает' } ]
+
+// Вариант 3: apply() - передаем аргументы массивом
+addDefectsFunc.apply(laptop, ['АКБ', 'Не держит заряд']);  // [ { part: 'АКБ', extent: 'Не держит заряд' } ]
+```
+
+---
+
+### Bind
+
+bind() - создает новую функцию, которая навсегда привязывает указанный объект как this, и позволяет вызывать эту функцию позже (сразу или с дополнительными аргументами).
+
+```javascript
+'use strict';
+
+const phone = {
+    model: 'iPhone 13',
+    defects: [],
+};
+
+const productsManipulation = {
+    addDefects(part, extent) {
+        this.defects.push({ part, extent });
+        console.log(`Дефект для ${this.model} добавлен.`);
+    }
+};
+
+// Вариант 1: Частичное применение - сразу привязали phone и первый аргумент 'дисплей'
+// const addDefectsPhoneDisplay = productsManipulation.addDefects.bind(phone, 'дисплей');
+// addDefectsPhoneDisplay('царапины');  // Дефект для iPhone 13 добавлен.
+// console.log(phone.defects);   // [ { part: 'дисплей', extent: 'царапины' } ]
+
+// Вариант 2: Привязали только объект, аргументы передаем при вызове
+const addDefectsPhone = productsManipulation.addDefects.bind(phone);
+addDefectsPhone('дисплей', 'царапины');  // Дефект для iPhone 13 добавлен.
+console.log(phone.defects);  // [ { part: 'дисплей', extent: 'царапины' } ]
+```
+
+```javascript
+'use strict';
+
+const user = { login: 'admin', password: '1234' };
+console.log(`Логин: "${user.login}" Пароль: "${user.password}"`);  // Логин: "admin" Пароль: "1234"
+
+function rmPass(res) {
+    if (res) { this.password = undefined };
+};
+
+const userRmPass = rmPass.bind(user);  // bind(user) создает новую функцию, где this навсегда привязан к объекту user
+userRmPass(true);  // функция rmPass выполняется с this = user
+console.log(`Логин: "${user.login}" Пароль: "${user.password}"`);  // Логин: "admin" Пароль: "undefined"
+```
+
+---
+
+### IIFE
+
+```javascript
+function  init() { console.log('Инициализация'); }
+init();  // Инициализация
+init();  // Инициализация (логичекая ошибка, допускаем инициализацию 2 раза подряд)
+
+(function() { console.log('Инициализация (IIFE)'); })();  // Такая функция будет вызвана только 1 раз
+```
+
+---
+
+### Замыкания
+
+```javascript
+'use strict';
+
+function balanceChange() {
+    let balance = 0;
+    return function(n) {
+        balance += n;
+        console.log(`На счету: ${balance}`);
+    }
+}
+
+const balance = balanceChange();  // создали счет №1 (balance = 0)
+const newBalance = balanceChange();  // создали счет №2 (balance = 0)
+
+balance(1000);  // счет №1: 0 + 1000 = 1000
+balance(-600);  // счет №1: 1000 - 600 = 400  
+newBalance(2000);  // счет №2: 0 + 2000 = 2000
+newBalance(-300);  // счет №2: 2000 - 300 = 1700
+
+// Каждая функция хранит свою копию переменной balance в своем замыкании.
+```
+
+Замыкание - это способность функции запоминать и иметь доступ к переменным из места своего создания, даже после того как внешняя функция завершила работу.
+
+---
