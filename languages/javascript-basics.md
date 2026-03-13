@@ -1656,3 +1656,125 @@ b.num = 3;
 console.log(a.num);  // 5
 console.log(b.num);  // 3
 ```
+
+---
+
+## Область видимости (Scope chain)
+
+В JavaScript используется лексическая область видимости (lexical scoping) (иногда называемая статической). Это означает, что область видимости переменной определяется тем, где в коде она была объявлена, а не тем, откуда вызывается функция. Переменная, объявленная внутри функции, помещается в локальную область видимости (scope) этой функции. Эта переменная доступна только внутри тела этой функции и во вложенных в нее функциях. Снаружи функции она недоступна.
+
+```javascript
+const a = 5;       // Глобальный scope
+
+function func() {
+    const a = 10;    // Scope функции
+}
+
+if (true) {
+    const a = 15;    // Блочный scope
+}
+```
+
+---
+
+### Strict mode
+
+**Strict mode** (`'use strict'`) включает более строгий синтаксис и безопасный код.
+
+
+```javascript
+'use strict';      // Включение Strict mode
+// Запрещает объявлять переменные без ключевого слова.
+num = 5;           // Выводит ошибку ReferenceError: num is not defined
+```
+
+
+```javascript
+'use strict';
+// Функции в блоках видны только внутри этого блока (не всплывают).
+if (true) {
+    function test() {
+        console.log('test');
+    }
+    test();  // 'test'
+}
+test();  // ReferenceError: test is not defined
+```
+
+
+```javascript
+'use strict';
+// Запрет на зарезервированные переменные
+const interface = 5;  // SyntaxError: Unexpected strict mode reserved word
+```
+
+```javascript
+'use strict';
+// Запрет дублирующих пааметров
+function func(a, a) {  // SyntaxError: Duplicate parameter name not allowed in this context
+    console.log(a);
+}
+```
+
+---
+
+### Поднятие
+
+Возможность использовать переменные до их объявления.
+
+```javascript
+'use strict';
+
+console.log(func(5));  // 25
+console.log(a);        // undefined
+console.log(b);        // ReferenceError: Cannot access 'b' before initialization
+console.log(c);        // ReferenceError: Cannot access 'c' before initialization
+
+function func(num) {
+    return num**2
+}
+
+var a = 1;
+let b = 2;
+const c = 3;
+```
+
+---
+
+### this
+
+```javascript
+const user = {
+    login: 'guest',
+    password: '1234',
+    email: 'guest@mail.com',
+    getInfo: function () {
+        console.log(`${this.login} - ${this.email}`);  // guest - guest@mail.com
+        const getPass = () => {
+            console.log(this.password);                // 1234
+        }
+        getPass();
+    },
+    usrInfo: () => {
+        console.log(`${this.login} - ${this.email}`);  // undefined - undefined
+    }
+}
+```
+
+---
+
+### Arguments
+
+```javascript
+function sum(a, b) {
+    console.log(arguments);                        // [Arguments] { '0': 3, '1': 5, '2': 7 }
+    console.log(arguments[0]);                     // 3
+    console.log(arguments['0']);                   // 3
+    console.log(arguments['0'] + arguments['2']);  // 10
+    console.log(a + b);                            // 8
+}
+
+sum(3, 5, 7);
+```
+
+---
