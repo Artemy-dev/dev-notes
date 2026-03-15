@@ -93,7 +93,7 @@ button.addEventListener('click', () => {  // вешаем событие
 
 ### Обработка нажатий
 
-Вариант 1.
+Вариант 1. Рекомендуется
 
 ```javascript
 'use strict';
