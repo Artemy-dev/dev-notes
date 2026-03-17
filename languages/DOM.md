@@ -369,4 +369,17 @@ console.log(document.querySelector('[id="two"]').textContent);     // B
 console.log(document.querySelector('[class="one"]').textContent);  // A
 ```
 
+**querySelectorAll()** - ищет все элементы, подходящие под селектор, и возвращает список
+
+```html
+<div class="one">A</div>
+<div class="one">B</div>
+```
+
+```javascript
+const a = document.querySelectorAll('.one');
+console.log(a[0].textContent);  // A
+console.log(a[1].textContent);  // B
+```
+
 ---
