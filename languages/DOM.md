@@ -382,4 +382,14 @@ console.log(a[0].textContent);  // A
 console.log(a[1].textContent);  // B
 ```
 
+**getElementById()** - ищет элемент по id и возвращает его. (Рекомендуется! Для поиска по ID)
+
+```html
+<div id="one">A</div>
+```
+
+```javascript
+console.log(document.getElementById('one').textContent);  // A
+```
+
 ---
