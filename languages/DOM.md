@@ -358,7 +358,7 @@ console.log(typeof panel.getAttribute('data-key'));  // string (атрибут �
 <div data-myKey="3">C</div>
 ```
 
-```javascropt
+```javascript
 const a = document.querySelector('.one');  // Точка (.) - ищет по классу
 console.log(a.textContent);  // A
 const b = document.querySelector('#two');  // Решетка (#) - ищет по id
