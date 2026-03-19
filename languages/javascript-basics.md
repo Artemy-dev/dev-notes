@@ -238,950 +238,499 @@ console.log(
 ```
 
 ### Типы данных
-- Объекты.
-- Примитивы.
 
-Примитивыные типы:
-```javascript
-let age = 25;           // Число (number).
-let pi = 3.14;          // Число (number).
-let name = 'Tim';       // Строка (string).
-let text1 = "abc";      // Строка (string).
-let text2 = `abc`;      // Строка (string).
-let isAdmin = true;     // Булевый (логический) тип (boolean).
-let info;               // Не заданное значение (undefined). Переменная объявлена, но значение не было задано.
-let about = undefined;  // Не заданное значение (undefined).
-let data = null;        // Примитив.
-console.log(info);    // undefined
-console.log(about);   // undefined
-console.log(data);    // null
-const bigNum = BigInt(999999999999999);  // Для работы с большим числами (bigint).
-console.log(bigNum);  // 999999999999999n
-const str = Symbol('text');  // Уникальный идентификатор (symbol).
-
-console.log(typeof name);    // typeof - оператор для определения типа.
-```
-
-*Важно! Переменная не имеет определенный тип. Тип имеет значение, которые мы присваиваем переменной.*
-
----
-
-### Шаблонные строки
-**Backtick (`)** - обратная кавычка. Аналог f-строки в Python.
+* Примитивы - простые значения, не являющиеся объектами. Все примитивы неизменяемы.
+* Объекты - коллекции данных и структур, могут содержать множества значений.
 
 ```javascript
-const project = 'Интернет-магаин';
-const developer = 'Tim';
-const price = 5000;
+// Примитивы
+let age = 25;             // Number (целое число)
+let price = 99.99;        // число с плавающей точкой
+let infinity = Infinity;  // бесконечность
+let notNumber = NaN;      // Not a Number (не число)
 
-// Обычная строка
-const res = developer + ' выполнил проект: ' + project + ' за ' + price + ' денег.';
-console.log(res);  // Tim выполнил проект: Интернет-магаин за 5000 денег.
+let name = 'Tim';       // String (строка), одинарные кавычки
+let text = "abc";       // двойные кавычки
+let message = `Привет, ${name}`; // обратные кавычки (шаблонные строки)
 
-// Шаблонная строка
-const res2 = `${developer} выполнил проект: ${project} за ${price} денег.`;
-console.log(res2);  // Tim выполнил проект: Интернет-магаин за 5000 денег.
+let isAdmin = true;     // Boolean (булевый/логический тип), истина
+let isLogged = false;   // ложь
 
-console.log(`Проект: ${project}
-Разработчик: ${developer}
-Цена: ${price}`);
-/* 
-Выведет:
-Проект: Интернет-магаин
-Разработчик: Tim
-Цена: 5000 
-*/
+let info;               // Undefined (неопределенный), переменная объявлена, но не инициализирована
+let about = undefined;  // явное присвоение undefined
+let data = null;        // Null (пусто)
+
+const bigNumber = 999999999999999n;  // BigInt (большие целые числа)
+const id1 = Symbol('id');            // Symbol (символ), создание уникального символа
+
+// Объекты
+let user = {  // Object (объект) - коллекция ключ-значение
+  name: 'Tim',
+  age: 25,
+  isAdmin: true
+};
+
+let colors = ['red', 'green', 'blue'];  // Array (массив) - упорядоченная коллекция
+
+function greet() {  // Function (функция) - вызываемый объект
+  return 'Hello!';
+}
 ```
 
----
+### Определение типа данных (typeof)
+
+```javascript
+console.log(typeof 10);     // number
+console.log(typeof 'abc');  // string
+console.log(typeof true);   // boolean
+```
 
 ### Преобразование типов
 
-```javascript
-console.log('5' + 3);          // 53
-console.log(Number('5') + 3);  // 8
-console.log('5' - 3);          // 2 (JS автоматически переконвертировал строку в число для вычитания)
-console.log(Boolean(0));       // false
-console.log(Boolean(''));      // false
-console.log(Boolean(1));       // true
-console.log(Boolean(15));      // true
-console.log(Boolean(-7));      // true
-console.log(Boolean("a"));     // true
-console.log(true + 5)          // 6 (JS автоматически переконвертировал true в 1 для сложения)
-console.log(true / 2)          // 0.5
-```
-
----
-
-## Управление потоком
-
----
-
-### if / else if / else
+* **Явное** (ручное) - когда мы сами вызываем функции преобразования.
+* **Неявное** (автоматическое) - когда JavaScript сам преобразует типы в операциях.
 
 ```javascript
-const num = 15;
+// Явное преобразование
+console.log(String(123));    // "123"
+console.log(Number('123'));  // 123
+console.log(Number(''));     // 0
+console.log(Number(true));   // 1
 
-if (num == 0) {
-    console.log(`Число ноль`);
-} else if (num % 2 == 0) {
-    console.log(`Число ${num} четное`);
-} else {
-    console.log(`Число ${num} нечетное`);
-}  // Выведет: Число 15 нечетное
+// Унарный плюс (быстрый способ)
+console.log(+'123');  // 123
+console.log(+true);   // 1
+console.log(+false);  // 0
+
+// Неявное преобразование
+console.log(5 + '5');    // "55" (число 5 становится строкой)
+console.log('5' * '2');  // 10 (умножение преобразует в числа)
+console.log('10' - 5);   // 5 (вычитание преобразует в числа)
 ```
 
----
+### Шаблонные строки
 
-### Switch
+**Backtick (`)** - обратная кавычка. Аналог f-строки в Python.
 
 ```javascript
-let role = 'admin';
-
-switch (role) {
-    case 'guest':
-        console.log('Гость');
-        break;
-    case 'user':
-        console.log('Пользователь');
-        break;
-    case 'admin':
-    case 'administrator':
-        console.log('Администратор');
-        break;
-    default:
-        console.log('Ошибка');
-}
-
-// Вывод: Администратор
+const username = 'admin';
+const password = '12345';
+console.log(`Логин: ${username}, пароль: ${password}`);  // Логин: admin, пароль: 12345
 ```
 
-```javascript
-let num = -7;
-
-switch (true) {
-    case num === 0:  // true === (num === 0)
-        console.log('Ноль');
-        break;
-    case num > 0:
-        console.log('Положительное число');
-        break;
-    case num < 0:
-        console.log('Отрицательное число');
-        break;
-}
-
-// Вывод: Отрицательное число
-```
-
----
-
-## Функции
-
----
-
-### Введение в функции
-
-```javascript
-/* 
-Функция конвертирует гигабайты в мегабайты.
-function - ключевое слово
-fromGbToMb - название функции
-gb - аргумет функции
-return - возвращаемое значение
-fromGbToMb() - вызов функции
-*/
-
-function fromGbToMb(gb) {
-    const mb = gb * 1024;
-    return `${gb} Gb = ${mb} Mb`;
-}
-
-let res = fromGbToMb(5);
-console.log(res);  // 5 Gb = 5120 Mb
-console.log(fromGbToMb(1));  // 1 Gb = 1024 Mb
-```
-
----
-
-### Анонимные функции
-
-```javascript
-// Записываем фунцию в переменную
-const fromGbToMb = function (gb) {
-    const mb = gb * 1024;
-    return `${gb} Gb = ${mb} Mb`;
-}
-
-console.log(fromGbToMb(5));  // 5 Gb = 5120 Mb
-```
-
----
-
-### Стрелочные функции
-
-```javascript
-// переменная = параметр => результат;
-const fromGbToMb = gb => `${gb} Gb = ${gb * 1024} Mb`;
-console.log(fromGbToMb(5));  // 5 Gb = 5120 Mb
-console.log(fromGbToMb(2));  // 2 Gb = 2048 Mb
-
-// переменная = (параметры) => {блок кода}
-const add = (a, b) => {
-    console.log(`Сума чисел ${a} и ${b}:`);
-    return a + b;
-}
-console.log(add(7, 9));
-/*
-Вывод:
-Сумма чисел 7 и 9:
-16
-*/
-```
-
----
-
-### Параметры по умолчанию
-
-```javascript
-function pow(n, p=2) {
-    return n ** p;
-}
-
-console.log(pow(5));     // 25
-console.log(pow(5, 3));  // 125
-```
-
----
-
-### Условия в функциях
-
-Вариант 1.
-
-```javascript
-function adminPanel(role) {
-    if (role === 'admin') {
-        return true;
-    }
-    return false;
-}
-
-console.log(adminPanel('user'));   // false
-console.log(adminPanel('admin'));  // true
-```
-
-Вариант 2.
-
-```javascript
-// Стерлочна функция + Тернарный оператор (не рекомендуется из-за плохой читаемости)
-const adminPanel = role => role === 'admin' ? true : false;
-console.log(adminPanel('user'));   // false
-console.log(adminPanel('admin'));  // true
-```
-
----
-
-### Функции в функциях
-
-```javascript
-function addition(a, b) {
-    return a + b;
-}
-
-function subtraction(a, b) {
-    return a - b;
-}
-
-function calculate(a, b) {
-    const add = addition(a, b);
-    const sub = subtraction(a, b);
-    return `Сумма чисел: ${add}. Разница чисел: ${sub}.`;
-}
-
-console.log(calculate(5, 3));  // Сумма чисел: 8. Разница чисел: 2.
-```
-
----
-
-## Массивы
-
-```javascript
-const arr1 = ['a', 'b', 'c']           // Первый способ объявить массив
-const arr2 = new Array('a', 'b', 'c')  // Второй способ объявить массив
-console.log(arr1)  // [ 'a', 'b', 'c' ]
-console.log(arr1)  // [ 'a', 'b', 'c' ]
-
-const list = [25, 'text', true, ['a', 'b', 'c']];
-
-console.log(list);         // [ 25, 'text', true, [ 'a', 'b', 'c' ] ]
-console.log(list.length);  // 4 - длина массива
-
-console.log(list[1]);     // text
-console.log(list.at(1));  // text
-
-console.log(list[3]);         // [ 'a', 'b', 'c' ]
-console.log(list.at(-1));     // [ 'a', 'b', 'c' ]
-console.log(list[3][0]);      // a
-console.log(list.at(-1)[0]);  // a
-```
-
----
-
-### Управление элементами массива
-
-```javascript
-let list = ['a', 'b', 'c'];
-
-// Индексы
-list[1] = 5;
-console.log(list);  // [ 'a', 5, 'c' ]
-list[3] = 'd';
-console.log(list);  // [ 'a', 5, 'c', 'd' ]
-list[5] = 'text';
-console.log(list);  // [ 'a', 5, 'c', 'd', <1 empty item>, 'text' ]
-
-list = [1, 2, 3];
-
-// Методы
-list.push(4);          // .push() - добавляет элемент в конец массива
-console.log(list);     // [ 1, 2, 3, 4 ]
-list.unshift(0);       // .unshift() - добавляет элемент в начало массива
-console.log(list);     // [ 0, 1, 2, 3, 4 ]
-let a = list.pop();    // .pop() - удаляет последний элемент массива и сохр. его в переменную
-console.log(list);     // [ 0, 1, 2, 3 ]
-console.log(a);        // 4
-let b = list.shift();  // .shift() - удаляет первый элемент массива и сохр. его в переменную
-console.log(list);     // [ 1, 2, 3 ]
-console.log(b);        // 0
-```
-
----
-
-### Поиск элемента
-
-```javascript
-let list = ['a', 'b', 'c'];
-
-console.log(list.indexOf('c'));   // 2 - индекс элемента 'c'
-console.log(list.indexOf('e'));   // -1 - если элемента нет в массиве
-console.log(list.includes('a'));  // true
-```
-
----
-
-### Slice, splice, concat, reverse
-
-```javascript
-let list = ['a', 'b', 'c', 'd', 'e'];
-
-console.log(list.slice(2));     // [ 'c', 'd', 'e' ] - Возвращяет часть массива с указанного индекса
-console.log(list.slice(1, 3));  // [ 'b', 'c' ]
-console.log(list.slice(-1));    // [ 'e' ]
-console.log(list.slice(-2));    // [ 'd', 'e' ]
-console.log(list);              // [ 'a', 'b', 'c', 'd', 'e' ] - Исходный массив не изменился
-```
-
-```javascript
-let list = ['a', 'b', 'c', 'd', 'e'];
-console.log(list.splice(2));  // [ 'c', 'd', 'e' ]
-console.log(list);            // [ 'a', 'b' ] - Метод .splice() изменяет исхоный массив
-
-let list = ['a', 'b', 'c', 'd', 'e'];
-console.log(list.splice(2, 2));  // [ 'c', 'd' ] - Срез со 2 элемента, 2 - элемента
-console.log(list);               // [ 'a', 'b', 'e' ]
-```
-
-```javascript
-let list1 = ['a', 'b', 'c'];
-let list2 = ['d', 'e', 'f'];
-let newList = list1.concat(list2)
-
-console.log(list1);    // [ 'a', 'b', 'c' ]
-console.log(list2);    // [ 'd', 'e', 'f' ]
-console.log(newList);  // [ 'a', 'b', 'c', 'd', 'e', 'f' ]
-```
-
-```javascript
-let list = ['a', 'b', 'c', 'd', 'e'];
-list.reverse();
-console.log(list);  // [ 'e', 'd', 'c', 'b', 'a' ] - Изменяет исходный массив
-```
-
----
-
-### Из строки в массив и обратно
-
-```javascript
-// Строка → Список
-const namesString = 'Tim, Bob, John';
-const namesList = namesString.split(', ');
-console.log(namesList);  // [ 'Tim', 'Bob', 'John' ]
-
-const userInfo = 'admin 1234';
-const [login, password] = userInfo.split(' ')
-console.log(login);     // admin
-console.log(password);  // 1234
-
-// Список → Строка
-const numsList = [1, 2, 3, 4, 5];
-const numsString = numsList.join(', ');
-console.log(numsString);  // 1, 2, 3, 4, 5
-```
-
----
-
-### Деструктуризация
-
-```javascript
-const userInfo = ['Admin', '1234'];
-const [login, password] = userInfo;  // [login, passwor] - список переменных
-console.log(login);    // Admin
-console.log(password);  // 1234
-```
-
----
-
-### Rest оператор
-
-```javascript
-const nums = [1, 2, 3, 4, 5];
-const [a, b, ...rest] = nums;
-console.log(rest);  // [ 3, 4, 5 ]
-```
-
----
-
-## Циклы
-
----
-
-### Цикл for
-
-```javascript
-for(let i = 1; i < 4; i++) {
-    console.log(i);  // Выведет 1, 2, 3 (каждое число на новой строке)
-}
-```
-
----
-
-### Break и continue
-
-```javascript
-const nums = ['a', 'b', 'c'];
-
-for(let i = 0; i < nums.length; i++) {
-    console.log(nums[i]);  // Выведет a, b, c
-}
-
-// continue - пропуск итерации
-for(let i = 0; i < nums.length; i++) {
-    if (nums[i] === 'b') {
-        continue;
-    }
-    console.log(nums[i]);  // Выведет a, c
-}
-
-// break - прервать цикл
-for(let i = 0; i < nums.length; i++) {
-    if (nums[i] === 'c') {
-        break;
-    }
-    console.log(nums[i]);  // Выведет a, b
-}
-```
-
----
-
-### Цикл в цикле
-
-Вариант 1.
-
-```javascript
-for (let a = 1; a < 3; a++) {
-    for(let b = 1; b < 4; b++) {
-        console.log(`a = ${a}; b = ${b}`)
-    }
-}
-/*
-a = 1; b = 1
-a = 1; b = 2
-a = 1; b = 3
-a = 2; b = 1
-a = 2; b = 2
-a = 2; b = 3
-*/
-```
-
-Вариант 2.
-
-```javascript
-const list = [ [1, 'Tim'], [2, 'Bob'], [3, 'John'] ]
-for(let i = 0; i < list.length; i++) {
-    for(let j = 0; j < list[i].length; j++) {
-        console.log(list[i][j])
-    }
-}
-/*
-1
-Tim
-2
-Bob
-3
-John
-*/
-```
-
----
-
-### Цикл while
-
-Вариант 1.
-
-```javascript
-// for(let i = 1; i < 4; i++) {
-//     console.log(i);  // Выведет 1, 2, 3 (каждое число на новой строке)
-// }
-
-let i = 1;
-while (i < 4) {
-    console.log(i);  // Выведет 1, 2, 3 (каждое число на новой строке)
-    i++;
-}
-```
-
-Вариант 2.
-
-```javascript
-const nums = ['a', 'b', 'c'];
-
-// for(let i = 0; i < nums.length; i++) {
-//     if (nums[i] === 'c') {
-//         break;
-//     }
-//     console.log(nums[i]);  // Выведет a, b
-// }
-
-let i = 0
-while (nums[i] != 'c') {
-    console.log(nums[i]);  // Выведет a, b
-    i++;
-}
-```
-
----
-
-### Цикл do while
-
-```javascript
-let i = 1;
-do {
-    console.log(i);  // Сначала выполниться блок do (минимум один раз)
-    i++
-} while(i < 0);      // Только потом будет проверка условия
-```
-
----
-
-### Циклы for of и for in
-
-```javascript
-const chars = ['a', 'b', 'c'];
-
-// for(let i = 0; i < nums.length; i++) {
-//     console.log(nums[i]);  // Выведет a, b, c
-// }
-
-for(let i of chars) {       // of - итерируется по значениям массива
-    console.log(i);         // Выведет a, b, c
-}
-
-for(let i in chars) {       // in - итерируется по индексам массива
-    console.log(chars[i]);  // Выведет a, b, c
-}
-```
-Вывод индекса и значения с помощью `.entries()`
-
-```javascript
-const chars = ['a', 'b', 'c'];
-
-for (let [i, v] of chars.entries()) {
-    console.log(`Индекс: ${i}, значение: ${v}`);
-}
-
-/* 
-Индекс: 0, значение: a
-Индекс: 1, значение: b
-Индекс: 2, значение: c 
-*/
-```
-
----
-
-## Функции высшего порядка
-
-**Функция первого класса** - это функция, которую можно хранить в переменной.
-
-```javascript
-const func = (num) => num + 1;
-```
-
-**Функции высшего порядка** - это функция, которая принимает другие функции как аргумент и возвращает другие функции.
-
-```javascript
-function example(func) {  // Принимает функцию func
-
-}
-```
-
-```javascript
-function example() {
-    return func;  // Возвращяет функцию func
-}
-```
-
----
-
-### Callback
-
-```javascript
-function addition(a, b) {
-    return a + b;
-}
-
-function subtraction(a, b) {
-    return a - b;
-}
-
-// функция высшего порядка
-function calculate(a, b, callback_func) {
-    console.log(callback_func.name);  // .name - возвращяет имя функции
-    const result = callback_func(a, b)
-    return result
-}
-
-console.log(calculate(5, 3, addition));
-console.log(calculate(5, 3, subtraction));
-
-/*
-Вывод:
-addition
-8
-subtraction
-2
-*/
-```
-
----
-
-### Возврат функции
-
-Вариант 1.
-
-```javascript
-function pow(p) {
-    return function (n) {
-        return n**p;
-    }
-}
-
-const power = pow(2);   // Переменная power - это функция, замкнувшая p = 2 (power хранит значение p = 2, хотя pow уже отработала)
-console.log(power(5));  // 25
-
-console.log(pow(2)(5)); // 25
-/*
-pow(2) → возвращает функцию с зафиксированным p = 2
-(5) → передает n = 5 в эту функцию
-*/
-```
-
-Вариант 2.
-
-```javascript
-// function pow(p) {
-//     return function (n) {
-//         return n**p;
-//     }
-// }
-
-// console.log(pow(2)(5)); // 25
-
-// Стрелочная функция
-const pow = p => n => n**p;
-console.log(pow(2)(5)); // 25
-```
-
----
-
-## Итерации в массивах
-
----
-
-### forEach
-
-`forEach` - выполняет переданную функцию для каждого элемента массива без создания нового массива (для побочных действий).
-
-```javascript
-const chars = ['a', 'b', 'c']
-
-// for (let [i, v] of chars.entries()) {
-//     console.log(`Индекс: ${i}, значение: ${v}`);
-// }
-
-chars.forEach((v, i) => {
-    console.log(`Индекс: ${i}, значение: ${v}`);
-})
-
-/* 
-Индекс: 0, значение: a
-Индекс: 1, значение: b
-Индекс: 2, значение: c 
-*/
-```
-
----
-
-### map
-
-`map` - создает новый массив из результатов вызова функции для каждого элемента (для преобразования данных).
-
-```javascript
-const nums = [5, 3, -2, 7, -6, 3];
-
-const numsPow = nums.map((v, i) => v**2);
-console.log(nums);     // [ 5, 3, -2, 7, -6, 3 ]
-console.log(numsPow);  // [ 25, 9, 4, 49, 36, 9 ]
-```
-
----
-
-### filter
-
-`filter` - оставляет элементы, которые удовлетворяют условию.
-
-```javascript
-const nums = [5, 3, -2, 7, -6, 3];
-
-const positiveNums = nums.filter(v => v > 0);
-console.log(positiveNums);  // [ 5, 3, 7, 3 ] 
-```
-
----
-
-### filter + map
-
-```javascript
-const nums = [5, 3, -2, 7, -6, 3];
-
-// const numsPow = nums.map(v => v**2);
-// const positiveNums = nums.filter(v => v > 0);
-// console.log(numsPow);       // [ 25, 9, 4, 49, 36, 9 ]
-// console.log(positiveNums);  // [ 5, 3, 7, 3 ] 
-
-const numsPositivePow = nums
-    .filter(v => v > 0)
-    .map(v => v**2);
-
-console.log(numsPositivePow);  // [ 25, 9, 49, 9 ]
-```
-
----
-
-### reduce
-
-```javascript
-const nums = [5, 3, -2, 7, -6, 3];
-
-// Считаем сумму всех чисел в списке
-// let res = 0;
-// for (value of nums) {
-//     res += value;
-// }
-// console.log(res);  // 10
-
-const res = nums.reduce((acc, value, i) => {
-    console.log(`Итерация: ${i} - acc: ${acc}, value: ${value}`);
-    return acc += value;
-}, 0);
-
-/*
-Итерация: 0 - acc: 0, value: 5
-Итерация: 1 - acc: 5, value: 3
-Итерация: 2 - acc: 8, value: -2
-Итерация: 3 - acc: 6, value: 7
-Итерация: 4 - acc: 13, value: -6
-Итерация: 5 - acc: 7, value: 3
-*/
-
-console.log(res);  // 10
-```
-
----
-
-### find и findIndex
-
-`find` - ищет первый встечающийся элемент в массиве, удовлетворяющий условию.
-`findIndex` - ищет первый встечающийся элемент в массиве, удовлетворяющий условию и возвращяет его индекс
-
-```javascript
-const nums = [5, 3, -2, 7, -6, 3, 10];
-
-console.log(nums.find(i => i > 5));         // 7
-console.log(nums.findIndex(i => i > 5));    // 3 - Индекс элемента 7
-console.log(nums.findIndex(i => i === 7));  // 3
-console.log(nums.findIndex(i => i === 8));  // -1 (если такого элемента нет в массиве)
-```
-
----
-
-### some
-
-`some` - проверяет массив на наличие элемента.
-
-```javascript
-const nums = [5, 3, -2, 7, -6, 3, 10];
-const chars = ['a', 'b', 'c'];
-
-console.log(nums.some(i => i === 3));     // true
-console.log(nums.some(i => i === 4));     // false
-console.log(chars.some(i => i === 'c'));  // true
-console.log(chars.some(i => i === 'e'));  // false
-```
-
----
-
-### flat и flatMap
-
-`flat` - превращает многомерный массив в плоский массив. В качестве аргумента передает число уровней вложенности (по умолчанию 1).
-
-```javascript
-const matrix = [[1, [2, 2.5]], [3, 4]];
-
-console.log(matrix);                // [ [ 1, [ 2, 2.5 ] ], [ 3, 4 ] ]
-console.log(matrix.flat());         // [ 1, [ 2, 2.5 ], 3, 4 ]
-console.log(matrix.flat().flat());  // [ 1, 2, 2.5, 3, 4 ]
-console.log(matrix.flat(2));        // [ 1, 2, 2.5, 3, 4 ]
-```
-
-`flatMap` - сначала преобразуее данные (map), потом превращает многомерный массив в плоский массив (flat).
-
-```javascript
-let matrix = [[1, 2], [3, 4]];
-
-// console.log(matrix);                                      // [ [ 1, 2 ], [ 3, 4 ] ]
-// console.log(matrix = matrix.map(i => i.concat(i[1]+1)));  // [ [ 1, 2, 3 ], [ 3, 4, 5 ] ]
-// console.log(matrix.flat());                               // [ 1, 2, 3, 3, 4, 5 ]
-
-console.log(matrix.flatMap(i => i.concat(i[1]+1)));  // [ 1, 2, 3, 3, 4, 5 ]
-```
-
----
-
-### sort
-
-```javascript
-const names = ['Tim', 'Bob', 'Ann'];
-names.sort();
-const nums = [4, -3, 6, -8, 1, 2];
-nums.sort();
-
-console.log(names);  // [ 'Ann', 'Bob', 'Tim' ]
-console.log(nums);   // [ -3, -8, 1, 2, 4, 6 ] - сортиует как строки (по умолчанию)
-
-// Сортировка по возрастанию
-nums.sort((a, b) => a - b);
-console.log(nums);   // [ -8, -3, 1, 2, 4, 6 ]
-
-// Сортировка по убыванию
-nums.sort((a, b) => b - a);
-console.log(nums);   // [ 6, 4, 2, 1, -3, -8 ]
-```
-
----
-
-### Быстрое создание массива
-
-Вариант 1.
-
-```javascript
-const list = new Array(5);
-console.log(list);   // [ <5 empty items> ]
-// list.fill(1);
-// console.log(list);   // [ 1, 1, 1, 1, 1 ]
-list.fill(1, 0, 3);  // 1 - элемент для заполнения, 0 - индекс(старт), 3 - колиество элементов
-console.log(list);   // [ 1, 1, 1, <2 empty items> ]
-```
-
-Вариант 2.
-
-```javascript
-const list = Array.from({length: 5}, (c, i) => i + 1);
-console.log(list);  // [ 1, 2, 3, 4, 5 ]
-```
-
----
-
-## Работа со строками
-
----
-
-### Базовые методы
+### Методы строк
 
 ```javascript
 const ide = 'Visual Studio';
 
 console.log(ide[0] + ide[7] + 'Code');                // VSCode
 console.log(ide.charAt(0) + ide.charAt(7) + 'Code');  // VSCode
-
 console.log(ide.length);            // 13 - количнство символов в строке
 console.log(ide.indexOf('i'));      // 1 - индекс буквы i (первое вхождение)
 console.log(ide.lastIndexOf('i'));  // 11 - индекс буквы i (последнее вхождение)
 console.log(ide.includes('S'));     // true (проверка, включает ли строка Visual Studio подстроку S)
 console.log(ide.slice(7));          // Studio (обрезает строку до указанного индекса)
 console.log(ide.slice(7, 11));      // Stud
-```
-
----
-
-### Преобразование строки
-
-```javascript
-const ide = 'Visual Studio';
-
 console.log(ide.toLowerCase());         // visual studio
 console.log(ide.toUpperCase());         // VISUAL STUDIO
-
 console.log(ide.replace('i', '*'));     // V*sual Studio (заменяет только первое вхождение)
 console.log(ide.replace(/i/g, '*'));    // V*sual Stud*o (/.../g - для поиска всех вхождений)
 console.log(ide.replaceAll('i', '*'));  // V*sual Stud*o
-
-const text = '   Hello, World!       '
-console.log(text);         //    Hello, World!
-console.log(text.trim());  // Hello, World! (удалены лишние пробелы в начале и в конце)
+console.log(ide.padStart(20, '='));  // =======Visual Studio
+console.log(ide.padEnd(20, '='));    // Visual Studio=======
 ```
 
----
-
-### Добавление строк
+### Условия (if / else if / else)
 
 ```javascript
-const game = 'Metro 2033';
-console.log(game
-    .padStart(15, '=')  // Добавляет '=' к строке пока общее количество символов не станет 15.
-    .padEnd(20, '=')
-);  // =====Metro 2033=====
+const num = 15;
 
-const phone = '+7(909)1234567';
-console.log(phone.slice(-4).padStart(phone.length, '*'));  // **********4567
+if (num === 0) {
+    console.log(`Число ноль`);
+} else if (num % 2 === 0) {
+    console.log(`Число ${num} четное`);
+} else {
+    console.log(`Число ${num} нечетное`);
+}  // Выведет: Число 15 нечетное
 ```
 
----
+### Конструкция switch-case
 
-## Объекты
+* **switch** - выполняет разные блоки кода в зависимости от значения выражения.
+* **case** - проверяет совпадение значения.
+* **break** - прерывает выполнение switch (без него выполнение "провалится" дальше).
+* **default** - выполняется, если ни один case не совпал (аналог else).
 
----
+```javascript
+const role = 'admin';
 
-### Создание и обращение к элементам
+switch (role) {
+    case 'admin':
+        console.log('Полный доступ');
+        break;
+    case 'user':
+        console.log('Только просмотр');
+        break;
+    default:
+        console.log('Нет доступа');
+}
+// Выведет: Полный доступ
+```
+
+### Цикл for
+
+```javascript
+// Базовый for
+for (let i = 0; i < 5; i++) {
+    console.log(i); // 0, 1, 2, 3, 4
+}
+
+// break - прерывание цикла
+for (let i = 0; i < 10; i++) {
+    if (i === 5) break;
+    console.log(i); // 0, 1, 2, 3, 4
+}
+
+// continue - пропуск итерации
+for (let i = 0; i < 5; i++) {
+    if (i === 2) continue;
+    console.log(i); // 0, 1, 3, 4
+}
+```
+
+### Цикл while
+
+```javascript
+// Базовый while
+let i = 0;
+while (i < 5) {
+    console.log(i); // 0, 1, 2, 3, 4
+    i++;
+}
+
+// break
+let j = 0;
+while (j < 10) {
+    if (j === 5) break;
+    console.log(j); // 0, 1, 2, 3, 4
+    j++;
+}
+
+// continue
+let k = 0;
+while (k < 5) {
+    k++;
+    if (k === 3) continue;
+    console.log(k); // 1, 2, 4, 5
+}
+```
+
+### Цикл do...while (выполнится хотя бы один раз)
+
+```javascript
+let i = 10;
+do {
+    console.log(i); // 10
+    i++;
+} while (i < 5);
+```
+
+### Функции
+
+```javascript
+// Function Declaration - объявляются через function, доступны до объявления (всплытие).
+function sum(a, b) {
+    return a + b;
+}
+console.log(sum(5, 3)); // 8
+
+// Function Expression (анонимная функция) - функция без имени как значение переменной, создаётся когда доходит поток кода.
+const multiply = function(a, b) {
+    return a * b;
+};
+console.log(multiply(5, 3)); // 15
+
+// Стрелочные функции - краткий синтаксис, не имеют своего this и arguments.
+const divide = (a, b) => a / b;
+console.log(divide(10, 2)); // 5
+
+// Стрелочная с блоком кода (нужен return)
+const getMax = (a, b) => {
+    if (a > b) return a;
+    return b;
+};
+console.log(getMax(10, 20)); // 20
+```
+
+### Параметры и аргументы
+
+* **Параметры** - переменные, указанные при объявлении функции.
+* **Аргументы** - значения, переданные при вызове функции.
+
+```javascript
+// a и b - параметры
+function sum(a, b) {
+    return a + b;
+}
+
+// 5 и 3 - аргументы
+console.log(sum(5, 3)); // 8
+
+// Параметры по умолчанию (ES6)
+function greet(name = 'Гость') {
+    return `Привет, ${name}!`;
+}
+console.log(greet());        // Привет, Гость!
+console.log(greet('Тим'));   // Привет, Тим!
+
+// arguments (псевдомассив, только в обычных функциях)
+function showAll() {
+    console.log(arguments[0]);     // яблоко
+    console.log(arguments[1]);     // банан
+    console.log(arguments.length); // 3
+}
+showAll('яблоко', 'банан', 'апельсин');
+```
+
+### Вложенные функции
+
+```javascript
+// Вложенная функция (функция внутри другой функции)
+function outer(a, b) {
+    function inner() {
+        return a + b; // имеет доступ к a и b
+    }
+    return inner();
+}
+console.log(outer(5, 3)); // 8
+
+// Замыкание (closure) - внутренняя функция имеет доступ к переменным внешней функции
+function createCounter() {
+    let count = 0;
+    return function() {
+        count++;
+        return count;
+    };
+}
+const counter = createCounter();
+console.log(counter()); // 1
+console.log(counter()); // 2
+
+// Функция возвращает функцию
+function multiplyBy(n) {
+    return function(x) {
+        return x * n;
+    };
+}
+const double = multiplyBy(2);
+console.log(double(5)); // 10
+console.log(double(10)); // 20
+```
+
+### Функции высшего порядка
+
+Функция, которая принимает другую функцию как аргумент (колбэк) или возвращает функцию.
+
+```javascript
+// Принимает функцию (колбэк)
+function greet(name, callback) {
+    const message = `Привет, ${name}!`;
+    callback(message);
+}
+
+// Возвращает функцию
+function createMultiplier(n) {
+    return function(x) {
+        return x * n;
+    };
+}
+```
+
+### Массивы
+
+```javascript
+const numbers = [1, 2, 3, 4, 5];
+const mixed = [1, 'текст', true, null, { name: 'Tim' }];
+const empty = [];
+
+// Доступ к элементам (индексация с 0)
+console.log(numbers[0]); // 1
+console.log(numbers[2]); // 3
+numbers[1] = 10;
+console.log(numbers); // [1, 10, 3, 4, 5]
+
+// Длина массива
+console.log(numbers.length); // 5
+
+// Поиск элементов
+console.log(fruits.indexOf('банан')); // 1
+console.log(fruits.includes('яблоко')); // true
+
+// Перебор массива
+const nums = [1, 2, 3];
+for (let i = 0; i < nums.length; i++) {
+    console.log(nums[i]); // 1, 2, 3
+}
+
+// for...of
+for (let num of nums) {
+    console.log(num); // 1, 2, 3
+}
+
+// for...in (перебирает индексы)
+const nums = [10, 20, 30];
+for (let index in nums) {
+    console.log(index);       // 0, 1, 2 (индексы)
+    console.log(nums[index]); // 10, 20, 30 (значения)
+}
+
+// forEach
+nums.forEach(function(num) {
+    console.log(num); // 1, 2, 3
+});
+```
+
+### Методы массивов
+
+```javascript
+// Методы для добавления/удаления
+const fruits = ['яблоко', 'банан'];
+fruits.push('апельсин');    // добавить в конец
+console.log(fruits);        // ['яблоко', 'банан', 'апельсин']
+fruits.pop();               // удалить с конца
+console.log(fruits);        // ['яблоко', 'банан']
+fruits.unshift('груша');    // добавить в начало
+console.log(fruits);        // ['груша', 'яблоко', 'банан']
+fruits.shift();             // удалить с начала
+console.log(fruits);        // ['яблоко', 'банан']
+
+// slice (начало, конец) - не изменяет исходный
+const arr = [1, 2, 3, 4, 5];
+console.log(arr.slice(1, 4));    // [2, 3, 4]
+console.log(arr.slice(2));       // [3, 4, 5]
+console.log(arr.slice(-2));      // [4, 5] (отрицательные индексы)
+
+// splice (с какого индекса, сколько удалить, добавить) - изменяет исходный
+const arr2 = [1, 2, 3, 4, 5];
+console.log(arr2.splice(1, 2));   // [2, 3] (удаленные элементы)
+console.log(arr2);                // [1, 4, 5] - исходный изменился
+
+const arr3 = [1, 2, 3, 4, 5];
+arr3.splice(2, 0, 'a', 'b');      // вставить без удаления
+console.log(arr3);                // [1, 2, 'a', 'b', 3, 4, 5]
+arr3.splice(3, 1, 'x');           // заменить
+console.log(arr3);                // [1, 2, 'a', 'x', 3, 4, 5]
+
+// concat - объединение массивов (новый массив)
+const a = [1, 2];
+const b = [3, 4];
+const c = a.concat(b);
+console.log(c);                    // [1, 2, 3, 4]
+// Можно добавлять значения
+console.log(a.concat(5, 6));       // [1, 2, 5, 6]
+
+// reverse - переворот массива (изменяет исходный)
+const d = [1, 2, 3];
+console.log(d.reverse());          // [3, 2, 1]
+console.log(d);                    // [3, 2, 1] - исходный изменился
+
+// some - проверяет, удовлетворяет ли хотя бы один элемент условию (возвращает true/false)
+// every - проверяет, удовлетворяют ли все элементы условию (возвращает true/false)
+const e = [1, 2, 3];
+// хотя бы один четный?
+console.log(e.some(i => i % 2 === 0));   // true
+// все четные?
+console.log(e.every(i => i % 2 === 0));  // false
+
+// reduce - сворачивает массив в одно значение (сумма, произведение, объект и т.д.).
+const j = [1, 2, 3, 4, 5];
+const sum = nums.reduce((acc, num) => acc + num, 0);
+//acc - accumulator (накопитель). Переменная, которая накапливает результат на каждой итерации.
+console.log(sum); // 15
+```
+
+### Сортировка массива
+
+```javascript
+const c = ['b', 'c', 'a'];
+const n = [-2, 0, -1, 2, 1];
+
+console.log(c.sort());  // [ 'a', 'b', 'c' ]
+console.log(n.sort());  // [ -1, -2, 0, 1, 2 ]
+
+// Сортировка по возрастанию
+console.log(n.sort((a, b) => a - b));  // [ -2, -1, 0, 1, 2 ]
+
+// Сортировка по убыванию
+console.log(n.sort((a, b) => b - a));  // [ 2, 1, 0, -1, -2 ]
+```
+
+### Rest-оператор (...)
+
+```javascript
+// Rest в функции (собирает аргументы)
+function sum(...numbers) {
+    return numbers.reduce((total, num) => total + num, 0);
+}
+console.log(sum(1, 2, 3, 4, 5)); // 15
+
+// Rest с обычными параметрами
+function show(first, second, ...rest) {
+    console.log(first);  // 1
+    console.log(second); // 2
+    console.log(rest);   // [3, 4, 5]
+}
+show(1, 2, 3, 4, 5);
+
+// Rest в деструктуризации массивов
+const nums = [1, 2, 3, 4, 5];
+const [a, b, ...rest] = nums;
+console.log(a);    // 1
+console.log(b);    // 2
+console.log(rest); // [3, 4, 5]
+
+// Rest в деструктуризации объектов
+const user = { name: 'Tim', age: 25, city: 'Moscow' };
+const { name, ...other } = user;
+console.log(name);  // Tim
+console.log(other); // { age: 25, city: 'Moscow' }
+```
+
+### Методы split и join
+
+* **split** - преобразует строку в массив по разделителю.
+* **join** - преобразует массив в строку с разделителем.
+
+```javascript
+const text = 'яблоко,банан,апельсин';
+const fruits = text.split(',');
+console.log(fruits); // ['яблоко', 'банан', 'апельсин']
+console.log('hello'.split(''));  // ['h', 'e', 'l', 'l', 'o']
+
+const colors = ['red', 'green', 'blue'];
+console.log(colors.join('-'));  // red-green-blue
+console.log(colors.join());     // red,green,blue (по умолчанию запятая)
+```
+
+### map
+
+`map` - создает новый массив из результатов вызова функции для каждого элемента (для преобразования данных).
+
+```javascript
+const nums = [1, 2, 3];
+
+const numsPow = nums.map((v) => v**2);
+console.log(numsPow);  // [ 1, 4, 9 ]
+
+function pow(n) {
+    return n**2
+}
+
+const nPow = nums.map(v => pow(v));
+console.log(nPow);  // [ 1, 4, 9 ]
+```
+
+### Объекты 
 
 ```javascript
 const userInfo = {
@@ -1189,18 +738,42 @@ const userInfo = {
     password: '1234',
 };
 
+// Доступ к свойствам
 console.log(userInfo);              // { login: 'admin', password: '1234' }
-console.log(userInfo.login);        // admin (рекомендуется)
-console.log(userInfo['login']);     // admin
+console.log(userInfo.login);        // admin (через точку - рекомендуется)
+console.log(userInfo['login']);     // admin (через квадратные скобки)
 
-userInfo.isAdmin = true;            // Добавили новое свойство объекта
-// userInfo['isAdmin'] = true;      // Добавили новое свойство объекта (вариант 2)
-userInfo.password = 'a1b2';         // Изменили свойство объекта
-// userInfo['password'] = 'a1b2';   // Изменили свойство объекта (вариант 2)
+// Добавление и изменение
+userInfo.isAdmin = true;            // Добавили новое свойство
+userInfo.password = 'a1b2';         // Изменили существующее
 console.log(userInfo);              // { login: 'admin', password: 'a1b2', isAdmin: true }
 
-// К свойству объекта рекомендуется обращяться в формате object.name
+// Удаление свойства
+delete userInfo.isAdmin;
+console.log(userInfo);              // { login: 'admin', password: 'a1b2' }
+
+// Доступ через переменную
+const key = 'login';
+console.log(userInfo[key]);         // admin (когда ключ в переменной)
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ---
 
