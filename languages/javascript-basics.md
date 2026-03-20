@@ -113,6 +113,26 @@ let age = 20;       // может измениться - используем le
 age = 21;           // допустимо
 ```
 
+### Strict mode - включает строгий режим, делает код безопаснее
+
+```javascript
+'use strict';  // Рекомендуется всегда использовать в современных проектах
+
+// Запрещает объявление переменных без var/let/const
+num = 5;  // ReferenceError
+
+// Запрещает дублирование параметров
+function sum(a, a) {}  // SyntaxError
+
+// Запрещает использовать зарезервированные слова как переменные
+const interface = 5;  // SyntaxError
+
+// Правильно
+let num = 5;
+function sum(a, b) {}
+const data = 5;
+```
+
 ### Конкатенация
 
 ```javascript
@@ -504,7 +524,7 @@ function outer(a, b) {
 }
 console.log(outer(5, 3)); // 8
 
-// Замыкание (closure) - внутренняя функция имеет доступ к переменным внешней функции
+// Замыкание (closure) - функция "запоминает" переменные из внешней области, даже после того как внешняя функция завершилась
 function createCounter() {
     let count = 0;
     return function() {
@@ -515,6 +535,7 @@ function createCounter() {
 const counter = createCounter();
 console.log(counter()); // 1
 console.log(counter()); // 2
+// Внешняя функция createCounter() завершилась, но count сохранился!
 
 // Функция возвращает функцию
 function multiplyBy(n) {
@@ -665,6 +686,14 @@ console.log(n.sort((a, b) => a - b));  // [ -2, -1, 0, 1, 2 ]
 console.log(n.sort((a, b) => b - a));  // [ 2, 1, 0, -1, -2 ]
 ```
 
+### Деструктуризация массива
+
+```javascript
+const nums = [1, 2, 3, 4, 5];
+const [a, b, c] = nums;
+console.log(a, b, c); // 1, 2, 3
+```
+
 ### Rest-оператор (...)
 
 ```javascript
@@ -688,12 +717,6 @@ const [a, b, ...rest] = nums;
 console.log(a);    // 1
 console.log(b);    // 2
 console.log(rest); // [3, 4, 5]
-
-// Rest в деструктуризации объектов
-const user = { name: 'Tim', age: 25, city: 'Moscow' };
-const { name, ...other } = user;
-console.log(name);  // Tim
-console.log(other); // { age: 25, city: 'Moscow' }
 ```
 
 ### Методы split и join
@@ -757,586 +780,192 @@ const key = 'login';
 console.log(userInfo[key]);         // admin (когда ключ в переменной)
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
----
-
 ### Методы объектов
 
 ```javascript
 const user = {
     login: 'user',
     domain: '@example.com',
-    createEmail: function () {
-        console.log(this);  // {login: 'user', domain: '@example.com', createEmail: [Function: createEmail]}
-        return this.login + this.domain  // this ссылается на текущий объект (user)
-    },
+    
+    createEmail() {  // Метод createEmail() - функция внутри объекта
+        return this.login + this.domain;
+    }
 };
 
-console.log(user.createEmail());  // user@example.com
+console.log(user.createEmail()); // user@example.com
 ```
-
----
 
 ### Итерирование по объекту
 
 ```javascript
-const obj = {
-    objNum1: {num1: 10, num2: 20},
-    objNum2: {num1: 100, num2: 200}
-};
-
-let objList = Object.keys(obj);  // Object.keys() выведет список ключей объекта
-console.log(objList);            // [ 'objNum1', 'objNum2' ]
-console.log(objList.length);     // 2 - количество ключей в объекте
-
-// Вариант 1. Через in
-// let sum = 0;
-// for (k in obj) {
-//     sum += obj[k].num1;
-//     sum += obj[k].num2;
-// }
-// console.log(sum);   // 330 (сумма всех чисел в объекте)
-
-// Вариант 2. Через Object.keys()
-let sum = 0;
-for (k of Object.keys(obj)) {
-    sum += obj[k].num1;
-    sum += obj[k].num2;
-}
-console.log(sum);   // 330 (сумма всех чисел в объекте)
-```
-
----
-
-### Деструктуризация, rest и spread
-
-```javascript
-// Деструктуризация массива
-const nums = [5, 10, 15];
-const [a, b, c] = nums;
-console.log(b);  // 10
-
-// Деструктуризация объекта
 const user = {
-    login: 'Admin',
-    role: 'administrator',
-    password: '1234',
-};
-const {login, password} = user;
-console.log(login);     // Admin
-console.log(password);  // 1234
-
-// rest (сбор остатка) оператор
-let userInfo = {
     name: 'Tim',
     age: 25,
-    city: 'Moscow',
-    email: 'tim@example.com'
+    city: 'Moscow'
 };
-const {email, ...userAbout} = userInfo;  // ... - rest оператор
-console.log(email);      // tim@example.com
-console.log(userAbout);  // { name: 'Tim', age: 25, city: 'Moscow' }
 
-//spread (разворот) оператор
-const skilsData = {
-    skils: ['Python', 'JS'],
-    exp: 2
-};
-console.log(userInfo);
-userInfo = {
-    ...user,
-    ...skilsData
-};
-console.log(userInfo);
-/*
-{
-  login: 'Admin',
-  role: 'administrator',
-  password: '1234',
-  skils: [ 'Python', 'JS' ],
-  exp: 2
-}
-*/
-```
-
----
-
-### Optional chaining
-
-```javascript
-const users = {                         // Корневой объект users - Уровень вложенности: 0
-    tim_777: {                          // Свойство tim_777 - Уровень вложенности: 1
-        auth: {                         // Свойство auth - Уровень вложенности: 2
-            email: 'tim@example.com',   // Свойства email и password - Уровень вложенности: 3
-            password: '1234'
-        }
-    },
-    usr_583: {
-
-    }
-};
-// console.log(users.tim_777.auth.email);  // tim@example.com
-// console.log(users.usr_583.auth);        // undefined
-// console.log(users.usr_583.auth.email);  // Ошибка TypeError
-
-// (?.) Опциональное построение цепочки / Optional chaining
-console.log(users?.tim_777?.auth?.email);  // tim@example.com
-console.log(users?.usr_583?.auth);         // undefined (usr_583 - есть, auth - отсутствует)
-console.log(users?.usr_583?.auth?.email);  // undefined (usr_583 - есть, auth и email - отсутствуют)
-console.log(users?.gst_125?.auth?.email);  // undefined (gst_125, auth и email - отсутствуют)
-```
-
----
-
-## Стек и Куча
-
-* **Call Stack (Стек вызовов)** - это структура данных, которая работает по принципу LIFO (Last In, First Out - последним пришел, первым ушел). Он хранит в оперативной памяти контексты выполнения функций (и глобальный контекст). Стек управляется автоматически (при вызове функции память выделяется, при возврате - очищается). Это очень быстро.
-* **Куча (Heap)** - это хранилище в оперативной памяти для объектов. Здесь хранятся сложные, динамические структуры данных. Размер кучи ограничен только объемом доступной оперативной памяти. Память выделяется под объекты, а когда они становятся не нужны, то Garbage Collector (сборщик мусора) находит и очищает их. Это нужно, потому что в куче память может фрагментироваться, и за ней нужно следить, чтобы не закончилось место.
-
----
-
-### Call Stack (стек)
-
-```javascript
-let a = 5;
-let b = a;
-b = 3;
-console.log(a);  // 5
-console.log(b);  // 3
-```
-
-**Шаг 1:** `let a = 5;`
-
-```text
-┌───────────┬──────────┬─────────┐
-│ Переменная│ Адрес    │ Значение│
-├───────────┼──────────┼─────────┤
-│ a         │ 0xFF1    │ 5       │
-└───────────┴──────────┴─────────┘
-```
-
-**Шаг 2:** `let b = a;`
-
-```text
-┌───────────┬──────────┬──────────┐
-│ Переменная│ Адрес    │ Значение │
-├───────────┼──────────┼──────────┤
-│ a         │ 0xFF1    │ 5        │
-│ b         │ 0xFF2    │ 5 (копия)│ ← копирование значения
-└───────────┴──────────┴──────────┘
-```
-
-**Шаг 3:** `b = 3;`
-
-```text
-┌───────────┬──────────┬─────────┐
-│ Переменная│ Адрес    │ Значение│
-├───────────┼──────────┼─────────┤
-│ a         │ 0xFF1    │ 5       │ ← не изменилось
-│ b         │ 0xFF2    │ 3       │ ← изменилось только b
-└───────────┴──────────┴─────────┘
-```
-
----
-
-### Heap (куча)
-
-```javascript
-const a = {num: 5};
-const b = a;
-b.num = 3;
-console.log(a.num);  // 3
-console.log(b.num);  // 3
-```
-
-**Шаг 1:** `const a = {num: 5};`
-
-```text
-Стек                                 Куча
-┌───────────┬──────────┬─────────┐   ┌──────────┬──────────┐
-│ Переменная│ Адрес    │ Значение│   │ Адрес    │ Значение │
-├───────────┼──────────┼─────────┤   ├──────────┼──────────┤
-│ a         │ 0xFF1    │ 0x001   │ ─>│ 0x001    │ {num: 5} │
-└───────────┴──────────┴─────────┘   └──────────┴──────────┘
-```
-
-**Шаг 2:** `const b = a;` (копирование ссылки)
-
-```text
-Стек                                 Куча
-┌───────────┬──────────┬─────────┐   ┌─────────┬──────────┐
-│ Переменная│ Адрес    │ Значение│   │ Адрес   │ Значение │
-├───────────┼──────────┼─────────┤   ├─────────┼──────────┤
-│ a         │ 0xFF1    │ 0x001   │ ─┐│ 0x001   │ {num: 5} │
-│ b         │ 0xFF2    │ 0x001   │ ─┴────┘     │          │
-└───────────┴──────────┴─────────┘   └─────────┴──────────┘
-```
-
-**Шаг 3:** `b.num = 3;` (изменение объекта по ссылке)
-
-```text
-Стек                                 Куча
-┌───────────┬──────────┬─────────┐   ┌─────────┬──────────┐
-│ Переменная│ Адрес    │ Значение│   │ Адрес   │ Значение │
-├───────────┼──────────┼─────────┤   ├─────────┼──────────┤
-│ a         │ 0xFF1    │ 0x001   │ ─┐│ 0x001   │ {num: 3} │ ← изменилось!
-│ b         │ 0xFF2    │ 0x001   │ ─┴────┘     │ 5 → 3    │
-└───────────┴──────────┴─────────┘   └─────────┴──────────┘
-```
-
-Обе переменные указывают на ОДИН объект в куче. Поэтому изменение видно через обе:
-
-```javascript
-console.log(a);  // 5
-console.log(b);  // 3
-```
-
----
-
-### Heap (куча) + Object.assign() / spread-оператор
-
-**Object.assign()**
-
-```javascript
-const a = {num: 5};
-const b = Object.assign({}, a);
-b.num = 3;
-console.log(a.num);  // 5
-console.log(b.num);  // 3
-```
-
-**Шаг 1:** `const a = {num: 5};`
-
-```text
-Стек                                 Куча
-┌───────────┬──────────┬─────────┐   ┌──────────┬──────────┐
-│ Переменная│ Адрес    │ Значение│   │ Адрес    │ Значение │
-├───────────┼──────────┼─────────┤   ├──────────┼──────────┤
-│ a         │ 0xFF1    │ 0x001   │ ─>│ 0x001    │ {num: 5} │
-└───────────┴──────────┴─────────┘   └──────────┴──────────┘
-```
-
-**Шаг 2:** `const b = Object.assign({}, a);` (создание копии объекта)
-
-```text
-Стек                                 Куча
-┌───────────┬──────────┬─────────┐   ┌─────────┬──────────┐
-│ Переменная│ Адрес    │ Значение│   │ Адрес   │ Значение │
-├───────────┼──────────┼─────────┤   ├─────────┼──────────┤
-│ a         │ 0xFF1    │ 0x001   │   │ 0x001   │ {num: 5} │
-│ b         │ 0xFF2    │ 0x002   │   │ 0x002   │ {num: 5} │ (копия)
-└───────────┴──────────┴─────────┘   └─────────┴──────────┘
-```
-
-**Шаг 3:** `b.num = 3;` (изменение копии объекта)
-
-```text
-Стек                                 Куча
-┌───────────┬──────────┬─────────┐   ┌─────────┬──────────┐
-│ Переменная│ Адрес    │ Значение│   │ Адрес   │ Значение │
-├───────────┼──────────┼─────────┤   ├─────────┼──────────┤
-│ a         │ 0xFF1    │ 0x001   │   │ 0x001   │ {num: 5} │ ← не изменилось!
-│ b         │ 0xFF2    │ 0x002   │   │ 0x002   │ {num: 3} │ ← изменилось!
-└───────────┴──────────┴─────────┘   └─────────┴──────────┘
-```
-
-**spread-оператор**
-
-```javascript
-const a = {num: 5};
-const b = {...a};
-b.num = 3;
-console.log(a.num);  // 5
-console.log(b.num);  // 3
-```
-
----
-
-## Область видимости (Scope chain)
-
-В JavaScript используется лексическая область видимости (lexical scoping) (иногда называемая статической). Это означает, что область видимости переменной определяется тем, где в коде она была объявлена, а не тем, откуда вызывается функция. Переменная, объявленная внутри функции, помещается в локальную область видимости (scope) этой функции. Эта переменная доступна только внутри тела этой функции и во вложенных в нее функциях. Снаружи функции она недоступна.
-
-```javascript
-const a = 5;       // Глобальный scope
-
-function func() {
-    const a = 10;    // Scope функции
+// for...in (перебор ключей)
+for (let key in user) {
+    console.log(key);        // name, age, city
+    console.log(user[key]);  // Tim, 25, Moscow
 }
 
-if (true) {
-    const a = 15;    // Блочный scope
+// Object.keys() - массив ключей
+const keys = Object.keys(user);
+console.log(keys); // ['name', 'age', 'city']
+
+// Object.values() - массив значений
+const values = Object.values(user);
+console.log(values); // ['Tim', 25, 'Moscow']
+
+// Object.entries() - массив пар [ключ, значение]
+const entries = Object.entries(user);
+console.log(entries); 
+// [['name', 'Tim'], ['age', 25], ['city', 'Moscow']]
+
+// for...of с Object.entries()
+for (let [key, value] of Object.entries(user)) {
+    console.log(`${key}: ${value}`);
 }
+// name: Tim
+// age: 25
+// city: Moscow
 ```
 
----
-
-### Strict mode
-
-**Strict mode** (`'use strict'`) включает более строгий синтаксис и безопасный код.
-
+### Деструктуризация объекта
 
 ```javascript
-'use strict';      // Включение Strict mode
-// Запрещает объявлять переменные без ключевого слова.
-num = 5;           // Выводит ошибку ReferenceError: num is not defined
+const user = { name: 'Tim', age: 25, city: 'Moscow' };
+const { name, age } = user;
+console.log(name, age); // Tim 25
 ```
 
+### Rest и Spread в объектах
 
 ```javascript
-'use strict';
-// Функции в блоках видны только внутри этого блока (не всплывают).
-if (true) {
-    function test() {
-        console.log('test');
-    }
-    test();  // 'test'
-}
-test();  // ReferenceError: test is not defined
+// Rest (собирает остаток)
+const user = { name: 'Tim', age: 25, city: 'Moscow' };
+const { name: userName, ...other } = user;
+console.log(userName); // Tim
+console.log(other);    // { age: 25, city: 'Moscow' }
+
+// Spread (раскладывает)
+const defaultSettings = { theme: 'dark', lang: 'ru' };                 
+const userSettings = { lang: 'en', fontSize: 14 };
+const settings = { ...defaultSettings, ...userSettings };  // Сначала defaultSettings, потом userSettings
+console.log(settings);  // { theme: 'dark', lang: 'en', fontSize: 14 } - Поздние значения перезаписывают ранние
 ```
 
-
-```javascript
-'use strict';
-// Запрет на зарезервированные переменные
-const interface = 5;  // SyntaxError: Unexpected strict mode reserved word
-```
-
-```javascript
-'use strict';
-// Запрет дублирующих пааметров
-function func(a, a) {  // SyntaxError: Duplicate parameter name not allowed in this context
-    console.log(a);
-}
-```
-
----
-
-### Поднятие
-
-Возможность использовать переменные до их объявления.
-
-```javascript
-'use strict';
-
-console.log(func(5));  // 25
-console.log(a);        // undefined
-console.log(b);        // ReferenceError: Cannot access 'b' before initialization
-console.log(c);        // ReferenceError: Cannot access 'c' before initialization
-
-function func(num) {
-    return num**2
-}
-
-var a = 1;
-let b = 2;
-const c = 3;
-```
-
----
-
-### this
+### Optional chaining (?.) - Безопасный доступ к вложенным свойствам
 
 ```javascript
 const user = {
-    login: 'guest',
-    password: '1234',
-    email: 'guest@mail.com',
-    getInfo: function () {
-        console.log(`${this.login} - ${this.email}`);  // guest - guest@mail.com
-        const getPass = () => {
-            console.log(this.password);                // 1234
-        }
-        getPass();
-    },
-    usrInfo: () => {
-        console.log(`${this.login} - ${this.email}`);  // undefined - undefined
+    name: 'Tim',
+    address: {
+        city: 'Moscow',
+        street: 'Tverskaya'
     }
-}
+};
+
+// console.log(user.contacts.phone);  // TypeError! (Без optional chaining ошибка)
+console.log(user.contacts?.phone);    // undefined (С optional chaining нет ошибки)
 ```
 
----
-
-### Arguments
+### Область видимости (Scope)
 
 ```javascript
-function sum(a, b) {
-    console.log(arguments);                        // [Arguments] { '0': 3, '1': 5, '2': 7 }
-    console.log(arguments[0]);                     // 3
-    console.log(arguments['0']);                   // 3
-    console.log(arguments['0'] + arguments['2']);  // 10
-    console.log(a + b);                            // 8
-}
+// Глобальная - переменная доступна везде
+const global = 'везде';
 
-sum(3, 5, 7);
+function test() {
+    // Функциональная - переменная доступна только внутри функции и вложенных функций
+    const funcVar = 'только в функции';
+    
+    if (true) {
+        // Блочная - переменная доступна только внутри блока
+        let blockVar = 'только в блоке';
+        console.log(funcVar);  // доступно
+    }
+    console.log(blockVar);  // ошибка (нет доступа)
+}
+console.log(funcVar);  // ошибка (нет доступа)
+
+// var не имеет блочной области видимости
+if (true) {
+    var old = 'видно снаружи';
+}
+console.log(old);  // 'видно снаружи' (var игнорирует блок)
 ```
 
----
+### Поднятие (Hoisting)
 
-## Управление this
-
----
-
-### Сокращенный синтаксис методов (Enhanced Object Literals)
+Важно! Это антипаттерн - всегда объявляйте переменные и функции перед использованием.
 
 ```javascript
-'use strict';
+console.log(func(5)); // 25 (функция полностью поднимается)
 
-const num = 5;
-const dict = {
-    num,  // num вместо num: num
-    getNum: function () {
-        return this.num;
-    },
-    getNumAlt() {  // getNumAlt() вместо getNumAlt: function()
-        return this.num;
-    }
+function func(num) {
+    return num ** 2;
 }
 
-console.log(dict.getNum());     // 5
-console.log(dict.getNumAlt());  // 5
+console.log(a); // undefined (var поднимается, но значение undefined)
+var a = 1;
+
+console.log(b); // ReferenceError (let/const не поднимаются)
+let b = 2;
 ```
 
----
-
-### Call, apply
-
-**call()** и **apply()** - позволяют вызвать функцию так, как будто она является методом указанного объекта.
+### this - ссылка на объект, в контексте которого выполняется функция
 
 ```javascript
-'use strict';
+// В глобальном контексте
+console.log(this);  // window (браузер) / global (Node.js)
 
-const phone = {
-    model: 'iPhone 13',
-    defects: [],
-    addDefects(part, extent) {
-        this.defects.push({
-            part,
-            extent
-        });
-        console.log(this.defects);
+// В методе объекта - ссылается на объект
+const user = {
+    name: 'Tim',
+    greet() {
+        console.log(this.name);  // this = user
     }
 };
+user.greet();  // Tim
 
-phone.addDefects('диплей', 'трещина');  // [ { part: 'диплей', extent: 'трещина' } ]
+// Обычная функция - this = window (или undefined в strict mode)
+function show() {
+    console.log(this);
+}
+show();  // window / undefined
 
-const laptop = {
-    model: 'MacBook',
-    defects: [],
+// Стрелочная функция - не имеет своего this (берет из внешнего контекста)
+const arrow = () => {
+    console.log(this);  // this = внешний контекст (window)
 };
 
-// Вариант 1: Присваивание метода (копирование ссылки)
-// laptop.addDefects = phone.addDefects;  // копируем ссылку на метод
-// laptop.addDefects('клавиатура', 'залипает');  // [ { part: 'клавиатура', extent: 'залипает' } ]
-
-const addDefectsFunc = phone.addDefects;
-
-// Вариант 2: call() - передаем аргументы через запятую
-// addDefectsFunc.call(laptop, 'клавиатура', 'залипает');  // [ { part: 'клавиатура', extent: 'залипает' } ]
-
-// Вариант 3: apply() - передаем аргументы массивом
-addDefectsFunc.apply(laptop, ['АКБ', 'Не держит заряд']);  // [ { part: 'АКБ', extent: 'Не держит заряд' } ]
-```
-
----
-
-### Bind
-
-bind() - создает новую функцию, которая навсегда привязывает указанный объект как this, и позволяет вызывать эту функцию позже (сразу или с дополнительными аргументами).
-
-```javascript
-'use strict';
-
-const phone = {
-    model: 'iPhone 13',
-    defects: [],
-};
-
-const productsManipulation = {
-    addDefects(part, extent) {
-        this.defects.push({ part, extent });
-        console.log(`Дефект для ${this.model} добавлен.`);
+const obj = {
+    name: 'Tim',
+    greet: () => {
+        console.log(this.name); // this = window (не obj!)
     }
 };
-
-// Вариант 1: Частичное применение - сразу привязали phone и первый аргумент 'дисплей'
-// const addDefectsPhoneDisplay = productsManipulation.addDefects.bind(phone, 'дисплей');
-// addDefectsPhoneDisplay('царапины');  // Дефект для iPhone 13 добавлен.
-// console.log(phone.defects);   // [ { part: 'дисплей', extent: 'царапины' } ]
-
-// Вариант 2: Привязали только объект, аргументы передаем при вызове
-const addDefectsPhone = productsManipulation.addDefects.bind(phone);
-addDefectsPhone('дисплей', 'царапины');  // Дефект для iPhone 13 добавлен.
-console.log(phone.defects);  // [ { part: 'дисплей', extent: 'царапины' } ]
+obj.greet(); // undefined
 ```
 
-```javascript
-'use strict';
-
-const user = { login: 'admin', password: '1234' };
-console.log(`Логин: "${user.login}" Пароль: "${user.password}"`);  // Логин: "admin" Пароль: "1234"
-
-function rmPass(res) {
-    if (res) { this.password = undefined };
-};
-
-const userRmPass = rmPass.bind(user);  // bind(user) создает новую функцию, где this навсегда привязан к объекту user
-userRmPass(true);  // функция rmPass выполняется с this = user
-console.log(`Логин: "${user.login}" Пароль: "${user.password}"`);  // Логин: "admin" Пароль: "undefined"
-```
-
----
-
-### IIFE
+### call / apply / bind
 
 ```javascript
-function  init() { console.log('Инициализация'); }
-init();  // Инициализация
-init();  // Инициализация (логичекая ошибка, допускаем инициализацию 2 раза подряд)
+const user = { name: 'Tim' };
 
-(function() { console.log('Инициализация (IIFE)'); })();  // Такая функция будет вызвана только 1 раз
-```
-
----
-
-### Замыкания
-
-```javascript
-'use strict';
-
-function balanceChange() {
-    let balance = 0;
-    return function(n) {
-        balance += n;
-        console.log(`На счету: ${balance}`);
-    }
+function say(prefix) {
+    console.log(prefix + this.name);
 }
 
-const balance = balanceChange();  // создали счет №1 (balance = 0)
-const newBalance = balanceChange();  // создали счет №2 (balance = 0)
+// call - вызывает функцию, явно указывая this и аргументы (через запятую).
+say.call(user, 'Hello ');     // Hello Tim
 
-balance(1000);  // счет №1: 0 + 1000 = 1000
-balance(-600);  // счет №1: 1000 - 600 = 400  
-newBalance(2000);  // счет №2: 0 + 2000 = 2000
-newBalance(-300);  // счет №2: 2000 - 300 = 1700
+// apply - вызывает функцию, явно указывая this и аргументы (массивом).
+say.apply(user, ['Hello ']);  // Hello Tim
 
-// Каждая функция хранит свою копию переменной balance в своем замыкании.
+// bind - возвращает новую функцию с привязанным this (не вызывает сразу).
+const b = say.bind(user);
+b('Hello ');  // Hello Tim
 ```
-
-Замыкание - это способность функции запоминать и иметь доступ к переменным из места своего создания, даже после того как внешняя функция завершила работу.
