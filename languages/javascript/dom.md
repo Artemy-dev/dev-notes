@@ -1,10 +1,12 @@
-## DOM (Document Object Model)
+### Что такое DOM (Document Object Model)
 
 **DOM (Document Object Model)** - это программный интерфейс (прослойка), который представляет HTML-документ в виде дерева объектов, с которыми JavaScript может взаимодействовать: читать, изменять, удалять существующие элементы и создавать новые. DOM - это мост, который позволяет JS "видеть" и "менять" HTML-страницу. Пример работы DOM:
 
 * **Из HTML в JS:** JS находит элемент, например кнопку (<button>) через DOM и "вешает" на нее обработчик клика
 * **Логика в JS:** при клике происхоит событие, например, увеличивается переменная-счетчик
 * **Из JS в HTML:** JS обновляет содержимое страницы через DOM, и пользователь видит новое значение на странице
+
+### Структура DOM
 
 ```html
 <!-- HTML-КОД (исходная разметка) -->
@@ -25,7 +27,7 @@
 ```
 
 ```text
-# СТРУКТУРА DOM (дерево узлов)
+# Дерево узлов
 Document
 ├── DOCTYPE
 └── html
@@ -41,355 +43,304 @@ Document
         └── footer
 ```
 
----
-
-### Выбор и манипуляции с элементами
-
-index.html:
+### Базовый HTML и CSS
 
 ```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>app.js</title>
-    <script src="./app.js" defer></script>  <!-- Скрипт выполнится после парсинга HTML -->
+    <title>DOM</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
 </head>
-<body style="text-align: center;">
+<body>
     <div class="panel">JavaScript</div>
-    <input class="input">
-    <button class="button">Change</button>
+    <input class="input" placeholder="Введите текст">
+    <button class="button">Изменить</button>
+    <div class="message"></div>
+
+    <ul id="todoList" class="todo-list">
+        <li>Задача 1</li>
+        <li>Задача 2</li>
+        <li>Задача 3</li>
+    </ul>
+    <div class="list-controls">
+        <input type="text" id="newTodo" placeholder="Новая задача">
+        <button id="addTodo">Добавить</button>
+        <button id="removeLastTodo">Удалить последнюю</button>
+    </div>
+
+    <form id="testForm">
+        <input type="text" id="formInput" placeholder="Введите что-то">
+        <button type="submit">Отправить</button>
+        <div class="form-message"></div>
+    </form>
+
+    <div id="testHtml" class="test-block">Текст с <strong>HTML-тегом</strong></div>
+    <div class="html-demo-buttons">
+        <button id="showTextContent">textContent</button>
+        <button id="showInnerText">innerText</button>
+        <button id="showInnerHTML">innerHTML</button>
+    </div>
+
+    <div class="panel" data-id="123" data-role="main-panel">Панель с data-атрибутами</div>
 </body>
 </html>
 ```
 
-app.js:
-
-```javascript
-'use strict';
-
-console.log(document.querySelector('.button'));
-```
-
-В консоле index.html страницы будет выведено:
-
 ```html
-<button class="button">Change</button>
+<!-- 
+class="panel"        - основной блок для отображения текста
+class="input"        - поле ввода текста
+class="button"       - кнопка для отправки
+class="message"      - блок для вывода сообщений
+
+id="todoList"        - список ul для работы с элементами
+class="todo-list li" - элементы списка (для делегирования событий)
+id="newTodo"         - поле ввода новой задачи
+id="addTodo"         - кнопка добавить
+id="removeLastTodo"  - кнопка удалить последнюю
+
+id="testForm"        - форма для submit
+id="formInput"       - поле ввода в форме
+class="form-message" - блок для вывода сообщений формы
+
+id="testHtml"        - блок с HTML-тегом внутри
+id="showTextContent" - кнопка для textContent
+id="showInnerText"   - кнопка для innerText
+id="showInnerHTML"   - кнопка для innerHTML
+
+class="panel"        - панель с data-id="123" и data-role="main-panel"
+
+defer                - скрипт выполняется после полной загрузки HTML
+class                - класс для CSS и JS (через точку)
+id                   - уникальный идентификатор (через #)
+data-*               - пользовательские атрибуты для хранения данных
+placeholder          - подсказка в поле ввода
+type="submit"        - кнопка отправки формы
+-->
 ```
-
-**document.querySelector()** - это метод, который находит первый элемент на странице, соответствующий указанному CSS-селектору, чтобы мы могли с ним взаимодействовать. Пример взаимодействия после поиска:
-
-```javascript
-const button = document.querySelector('.button');
-button.textContent = 'Нажми меня';  // меняем текст
-button.style.backgroundColor = 'red';  // меняем цвет
-button.addEventListener('click', () => {  // вешаем событие
-    alert('Клик!');
-});
-```
-
----
-
-### Обработка нажатий
-
-Вариант 1. Рекомендуется
-
-```javascript
-'use strict';
-
-document.querySelector('.button').addEventListener('click', () => {
-    const input = document.querySelector('.input').value;
-    const panelText = document.querySelector('.panel')
-    panelText.textContent = input;
-    document.querySelector('.input').value = '';  // Очищает поле ввода
-});
-
-// querySelector() - находит первый элемент на странице, соответствующий CSS-селектору
-// addEventListener() - назначает функцию-обработчик для указанного события на элементе
-// 'click' - событие, возникающее при клике мышью по элементу
-// .value - свойство, которое содержит текущее значение элемента формы (input, select, textarea)
-// .textContent - свойство, которое содержит текстовое содержимое элемента (без HTML-тегов)
-```
-
-Вариант 2.
-
-```javascript
-'use strict';
-
-function changeClick() {
-    const input = document.querySelector('.input').value;
-    const panelText = document.querySelector('.panel')
-    panelText.textContent = input;
-    document.querySelector('.input').value = '';
-}
-```
-
-В файле index.html заменить переписать `<button class="button">Change</button>`:
-
-```html
-<button class="button" onclick="changeClick()">Change</button>
-```
-
----
-
-### Обработка событий клавиатуры
-
-```html
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>app.js</title>
-    <script src="./app.js" defer></script>  <!-- Скрипт выполнится после парсинга HTML -->
-</head>
-<body style="text-align: center;">
-    <div class="panel">JavaScript</div>
-    <input class="input">
-    <button class="button">Change</button>
-</body>
-</html>
-```
-
-```javascript
-'use strict';
-
-function changeClick() {
-    const input = document.querySelector('.input').value;
-    const panelText = document.querySelector('.panel')
-    panelText.textContent = input;
-    document.querySelector('.input').value = '';
-}
-
-// Обработка кнопки <button class="button">Change</button>
-document.querySelector('.button').addEventListener('click', changeClick);  // changeClick - без скобок (ожидает события)
-
-// Обработка нажатия кнопки 'Enter' на клавиатуре
-document.querySelector('.input').addEventListener('keydown', (e) => {
-    if (e.code === 'Enter') {
-        changeClick();
-    }
-});
-
-// 'keydown' - событие, возникающее при нажатии клавиши на клавиатуре
-// e (event) - объект события, содержащий информацию о произошедшем событии (какая клавиша, координаты и т.д.)
-// e.code - свойство, содержащее физический код клавиши (например 'Enter', 'KeyA', 'Digit1')
-```
-
----
-
-### Работа со стилями и классами
-
-```html
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>app.js</title>
-    <link rel="stylesheet" href="./styles.css">
-    <script src="./app.js" defer></script>  <!-- Скрипт выполнится после парсинга HTML -->
-</head>
-<body style="text-align: center;">
-    <div class="panel">JavaScript</div>
-    <input class="input">
-    <button class="button">Change</button>
-    <div class="notfication">Changed!</div>
-</body>
-</html> 
-```
-
-Вариант 1 (прямое изменение style).
 
 ```css
-body {  /* Стили для всей страницы */
-    font-family: Arial, sans-serif;  /* Шрифт текста */
-    background-color: #f5f5f5;     /* Светло-серый фон страницы */
-    margin: 50px 0;                  /* Отступ сверху/снизу 50px, по бокам 0 */
-}
-
-.panel {  /* Блок с текстом (зеленая панель) */
-    background-color: #4CAF50;  /* Зеленый фон */
-    color: white;               /* Белый текст */
-    padding: 20px;                /* Внутренние отступы со всех сторон */
-    margin: 20px auto;            /* Внешние отступы: 20px сверху/снизу, auto по бокам (центрирует) */
-    width: 380px;                 /* Ширина блока */
-    border-radius: 8px;           /* Скругленные углы */
-    font-size: 18px;              /* Размер шрифта */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);  /* Тень: сдвиг, размытие, прозрачность */
-}
-
-.input {  /* Поле ввода */
-    width: 270px;                   /* Ширина поля */
-    padding: 12px;                  /* Внутренние отступы (делает поле выше) */
-    margin: 10px;                   /* Внешние отступы со всех сторон */
-    border: 2px solid #ddd;       /* Серая рамка толщиной 2px */
-    border-radius: 5px;             /* Скругленные углы */
-    font-size: 16px;                /* Размер шрифта */
-    transition: border-color 0.3s;  /* Плавное изменение цвета рамки (0.3 секунды) */
-}
-
-.input:focus {  /* Состояние поля ввода когда оно в фокусе (кликнули) */
-    outline: none;            /* Убирает стандартную обводку браузера */
-    border-color: #4CAF50;  /* Рамка становится зеленой */
-}
-
-.button {  /* Кнопка */
-    background-color: #4CAF50;  /* Зеленый фон */
-    color: white;               /* Белый текст */
-    padding: 12px 30px;           /* Отступы: 12px сверху/снизу, 30px слева/справа */
-    border: none;                 /* Убирает рамку */
-    border-radius: 5px;           /* Скругленные углы */
-    font-size: 16px;              /* Размер шрифта */
-    cursor: pointer;              /* Курсор в виде руки при наведении */
-    transition: background-color 0.3s;  /* Плавное изменение цвета фона */
-}
-
-.button:hover {  /* Состояние кнопки при наведении мыши */
-    background-color: #45a049;   /* Чуть темнее зеленый */
-}
-
-.button:active {  /* Состояние кнопки в момент нажатия */
-    transform: translateY(1px);  /* Сдвиг вниз на 1px (эффект нажатия) */
-}
-
-.notfication {
-    font-size: 14px;
+.panel {
+    background: #4CAF50;
+    color: white;
+    padding: 20px;
+    width: 300px;
+    text-align: center;
     margin: 10px auto;
-    display: none;  /* По умолчанию элемент скрыт */
 }
 
-/*
-.panel, .input, .button - классы (стили для элементов с этими классами)
-:focus - псевдокласс (стиль когда элемент в фокусе)
-:hover - псевдокласс (стиль при наведении мыши)
-:active - псевдокласс (стиль в момент нажатия)
+.input {
+    display: block;
+    width: 280px;
+    padding: 10px;
+    margin: 10px auto;
+}
+
+.button {
+    background: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin: 10px auto;
+    display: block;
+}
+
+.message {
+    text-align: center;
+    margin: 10px auto;
+    font-size: 14px;
+}
+
+.hidden {
+    display: none;
+}
+
+.highlight {
+    background: orange;
+    color: black;
+}
+
+.todo-list {
+    width: 300px;
+    margin: 20px auto;
+    padding: 0;
+    list-style: none;
+}
+
+.todo-list li {
+    background: #f0f0f0;
+    padding: 10px;
+    margin: 5px 0;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.todo-list li:hover {
+    background: #e0e0e0;
+}
+
+.list-controls {
+    text-align: center;
+    margin: 10px auto;
+}
+
+.list-controls input {
+    padding: 8px;
+    width: 200px;
+}
+
+.list-controls button {
+    padding: 8px 12px;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+#testForm {
+    width: 300px;
+    margin: 20px auto;
+    text-align: center;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+#testForm input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+#testForm button {
+    padding: 8px 20px;
+    cursor: pointer;
+}
+
+.form-message {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #666;
+}
+
+.test-block {
+    width: 300px;
+    margin: 20px auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background: #f9f9f9;
+    text-align: center;
+}
+
+.html-demo-buttons {
+    text-align: center;
+    margin: 10px auto;
+}
+
+.html-demo-buttons button {
+    padding: 5px 10px;
+    margin: 0 5px;
+    cursor: pointer;
+}
+```
+
+```css
+/* 
+background  - цвет фона
+color       - цвет текста
+padding     - внутренний отступ (от содержимого до границы)
+margin      - внешний отступ (от границы до соседних элементов)
+width       - ширина элемента
+text-align  - выравнивание текста (left, center, right)
+display     - тип отображения (block - блочный, none - скрыть, flex - гибкий)
+border      - рамка (толщина тип цвет, например 1px solid red)
+cursor      - вид курсора (pointer - рука, default - стрелка)
+font-size   - размер шрифта (px, rem, em)
+list-style  - стиль маркеров списка (none - убрать точки)
+border-radius - скругление углов (px, %)
+transition  - плавное изменение свойств (например background 0.2s)
+box-sizing  - как считается ширина (border-box - включает padding и border)
+margin-top / margin-right / margin-bottom / margin-left - отступ с конкретной стороны
+
+:hover  - стиль при наведении мыши
+:focus  - стиль когда элемент в фокусе
+:active - стиль в момент нажатия
+
+px  - пиксели (фиксированный размер)
+%   - процент от родительского элемента
+auto - автоматический расчет (часто для центрирования)
+
+block    - элемент занимает всю ширину, перенос строки
+none     - полностью скрывает элемент
+pointer  - курсор в виде руки
+center   - выравнивание по центру
+solid    - сплошная линия (для border)
+border-box - ширина включает padding и border, не выходит за пределы
 */
 ```
 
-```javascript
-'use strict';
-
-function changeClick() {
-    const input = document.querySelector('.input').value;
-    const panelText = document.querySelector('.panel')
-    panelText.textContent = input;
-    document.querySelector('.notfication').style.display = 'block';  // Меняем display: none; на display: block;
-    document.querySelector('.input').value = '';
-}
-
-// Обработка кнопки <button class="button">Change</button>
-document.querySelector('.button').addEventListener('click', changeClick);
-```
-
-Вариант 2 (работа с классами) - Рекомендуется!
-
-В styles.css добавить блок:
-
-```css
-.notfication_active {
-    display: block;
-}
-```
+### Поиск элементов
 
 ```javascript
-'use strict';
-'use strict';
+// document.querySelector() - возвращает первый найденный элемент
+const panel = document.querySelector('.panel');
 
-function changeClick() {
-    const input = document.querySelector('.input').value;
-    const panelText = document.querySelector('.panel')
-    panelText.textContent = input;
-    document.querySelector('.notfication').classList.add('notfication_active');
-    document.querySelector('.input').value = '';
-}
+// document.querySelectorAll() - возвращает все элементы (NodeList)
+const allPanels = document.querySelectorAll('.panel');        // С точкой ищет по классу
+const allButtons = document.querySelectorAll('button');       // Без точки/хештега ищет по тегу <button>
+const todoItems = document.querySelectorAll('#todoList li');  // Ищет ВСЕ <li> ВНУТРИ элемента с id="todoList"
 
-// classList - свойство, которое позволяет работать с классами элемента (добавлять, удалять, проверять наличие)
-// .add('класс') - добавляет класс элементу
-// .remove('класс') - удаляет класс у элемента
-// .toggle('класс') - переключает класс (добавляет если нет, удаляет если есть)
-// .contains('класс') - проверяет, есть ли класс у элемента (возвращает true/false)
+// document.getElementById() - поиск по id
+const todoListElement = document.getElementById('todoList');
 
-// Обработка кнопки <button class="button">Change</button>
-document.querySelector('.button').addEventListener('click', changeClick);
+// Примеры использования (DevTools - Клавиша F12 в браузере -> Console)
+console.log(panel);            // Первый .panel
+console.log(allPanels);        // Все .panel
+console.log(todoListElement);  // Элемент с id="todoList"
 ```
 
----
-
-### Установка атрибутов
-
-* **getAttribute** - получает значение атрибута
-* **setAttribute** - устанавливает значение атрибута
-
-```html
-<input class="input">
-<button class="button">Change</button>
-```
+### Работа с содержимым
 
 ```javascript
-// ПОЛУЧЕНИЕ (getAttribute)
-const button = document.querySelector('.button');
-const buttonClass = button.getAttribute('class'); // получили class="button"
-console.log('Класс кнопки:', buttonClass);        // Класс кнопки: button
 
-// УСТАНОВКА (setAttribute)
-const input = document.querySelector('.input');
-input.setAttribute('placeholder', 'Введите текст'); // добавляем атрибут placeholder
-
-// Устанавливаем свои атрибуты
-const panel = document.querySelector('.panel')
-panel.setAttribute('data-key', 1);  // <div class="panel" data-key="1">JavaScript</div>
-console.log(typeof panel.getAttribute('data-key'));  // string (атрибут всегда строка)
 ```
 
-Для чего нужны свои атрибуты (data-*):
-
-* **Хранение данных** - привязать id, цену, статус к элементу (data-user-id="123")
-* **Состояние UI** - открыт/закрыт модалки, активный таб (data-open="true")
-* **CSS-стилизация** - менять стили через атрибут (data-theme="dark", data-status="error")
-* **Доступность (ARIA)** - для скринридеров (aria-label, aria-expanded)
-* **Тестирование** - data-testid для автотестов (не меняются при рефакторинге)
-* **Фреймворки** - внутренняя идентификация компонентов (React, Vue)
-
-```html
-<div class="one">A</div>
-<div id="two">B</div>
-<div data-myKey="3">C</div>
-```
+### Работа с атрибутами
 
 ```javascript
-const a = document.querySelector('.one');  // Точка (.) - ищет по классу
-console.log(a.textContent);  // A
-const b = document.querySelector('#two');  // Решетка (#) - ищет по id
-console.log(b.textContent);  // B
-const c = document.querySelector('[data-myKey="3"]');  // Квадратные скобки ([]) - ищут по любому атрибуту
-console.log(c.textContent);  // C
-console.log(document.querySelector('[id="two"]').textContent);     // B
-console.log(document.querySelector('[class="one"]').textContent);  // A
+
 ```
 
-**querySelectorAll()** - ищет все элементы, подходящие под селектор, и возвращает список
-
-```html
-<div class="one">A</div>
-<div class="one">B</div>
-```
+### Работа со стилями и классами
 
 ```javascript
-const a = document.querySelectorAll('.one');
-console.log(a[0].textContent);  // A
-console.log(a[1].textContent);  // B
+
 ```
 
-**getElementById()** - ищет элемент по id и возвращает его. (Рекомендуется! Для поиска по ID)
-
-```html
-<div id="one">A</div>
-```
+### События
 
 ```javascript
-console.log(document.getElementById('one').textContent);  // A
+
 ```
 
----
+### Управление событиями
+
+```javascript
+
+```
+
+### Создание и удаление элементов
+
+```javascript
+
+```
+
+### Жизненный цикл
+
+```javascript
+
+```
