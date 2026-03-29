@@ -713,7 +713,7 @@ console.log(e.every(i => i % 2 === 0));  // false
 
 // reduce - сворачивает массив в одно значение (сумма, произведение, объект и т.д.).
 const j = [1, 2, 3, 4, 5];
-const sum = nums.reduce((acc, num) => acc + num, 0);
+const sum = j.reduce((acc, num) => acc + num, 0);
 //acc - accumulator (накопитель). Переменная, которая накапливает результат на каждой итерации.
 console.log(sum); // 15
 ```
