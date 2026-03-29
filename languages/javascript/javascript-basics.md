@@ -619,43 +619,43 @@ function createMultiplier(n) {
 
 ```javascript
 const numbers = [1, 2, 3, 4, 5];
+const fruits = ['яблоко', 'банан'];
 const mixed = [1, 'текст', true, null, { name: 'Tim' }];
 const empty = [];
 
 // Доступ к элементам (индексация с 0)
-console.log(numbers[0]); // 1
-console.log(numbers[2]); // 3
+console.log(numbers[0]);  // 1
+console.log(numbers[2]);  // 3
 numbers[1] = 10;
-console.log(numbers); // [1, 10, 3, 4, 5]
+console.log(numbers);     // [1, 10, 3, 4, 5]
 
 // Длина массива
-console.log(numbers.length); // 5
+console.log(numbers.length);  // 5
 
 // Поиск элементов
-console.log(fruits.indexOf('банан')); // 1
-console.log(fruits.includes('яблоко')); // true
+console.log(fruits.indexOf('банан'));    // 1
+console.log(fruits.includes('яблоко'));  // true
 
 // Перебор массива
-const nums = [1, 2, 3];
-for (let i = 0; i < nums.length; i++) {
-    console.log(nums[i]); // 1, 2, 3
+const n = [1, 2, 3];
+for (let i = 0; i < n.length; i++) {
+    console.log(n[i]);  // 1, 2, 3
 }
 
 // for...of
-for (let num of nums) {
-    console.log(num); // 1, 2, 3
+for (let num of n) {
+    console.log(num);  // 1, 2, 3
 }
 
 // for...in (перебирает индексы)
-const nums = [10, 20, 30];
-for (let index in nums) {
-    console.log(index);       // 0, 1, 2 (индексы)
-    console.log(nums[index]); // 10, 20, 30 (значения)
+for (let index in n) {
+    console.log(index);     // 0, 1, 2 (индексы)
+    console.log(n[index]);  // 1, 2, 3 (значения)
 }
 
 // forEach
-nums.forEach(function(num) {
-    console.log(num); // 1, 2, 3
+n.forEach(function(num) {
+    console.log(num);  // 1, 2, 3
 });
 ```
 
