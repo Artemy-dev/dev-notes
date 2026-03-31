@@ -333,7 +333,37 @@ messageDiv.innerHTML = '<button>Кликни меня</button>'; // На стр�
 ### Работа с атрибутами
 
 ```javascript
+const panels = document.querySelectorAll('.panel');
+const firstPanel = panels[0];  // без data-атрибутов <div class="panel">JavaScript</div>
+const secondPanel = panels[1]; // с data-атрибутами <div class="panel" data-id="123" data-role="main-panel">
+const input = document.querySelector('.input');
 
+// Получить атрибут - getAttribute()
+console.log(secondPanel.getAttribute('data-id'));  // "123"
+console.log(input.getAttribute('placeholder'));    // "Введите текст"
+
+// Изменить или добавить атрибут - setAttribute()
+secondPanel.setAttribute('data-id', '999');
+console.log(secondPanel.getAttribute('data-id'));  // "999"
+input.setAttribute('placeholder', 'Новый текст');
+console.log(input.getAttribute('placeholder'));    // "Новый текст"
+
+// Проверить наличие - hasAttribute()
+console.log(secondPanel.hasAttribute('data-role')); // true
+console.log(secondPanel.hasAttribute('title'));     // false
+
+// Удалить атрибут removeAttribute()
+secondPanel.removeAttribute('data-role');
+console.log(secondPanel);  // <div class="panel" data-id="999">
+
+// Работа с data- (dataset)*
+secondPanel.dataset.id = '555';
+secondPanel.dataset.newValue = '1';
+console.log(secondPanel);  // <div class="panel" data-id="555" data-new-value="1">
+
+// Удаление через dataset
+delete secondPanel.dataset.newValue;  // удалит data-new-value="1"
+console.log(secondPanel);             // <div class="panel" data-id="555">
 ```
 
 ### Работа со стилями и классами
