@@ -369,7 +369,33 @@ console.log(secondPanel);             // <div class="panel" data-id="555">
 ### Работа со стилями и классами
 
 ```javascript
+const panel = document.querySelector('.panel');
+const message = document.querySelector('.message');
+const input = document.querySelector('.input');
 
+// element.style - работа с inline-стилями (перезаписывает только конкретное свойство)
+// panel.style.background = 'red';
+// panel.style.color = 'black';
+// panel.style.display = 'none';   // скрыть
+// panel.style.display = 'block';  // показать
+
+// classList - работа с классами (основной способ)
+// Добавить класс
+panel.classList.add('highlight');     // <div class="panel highlight" style="background: red; color: black; display: block;">
+// Удалить класс
+panel.classList.remove('highlight');  // <div class="panel" style="background: red; color: black; display: block;">
+// Переключить (если есть - удалить, если нет - добавить)
+panel.classList.toggle('hidden');     // Элемент скроется (display: none)
+panel.classList.toggle('hidden');     // Элемент снова покажется
+// Проверить наличие класса
+console.log(panel.classList.contains('panel'));      // true
+console.log(panel.classList.contains('hidden'));     // false
+console.log(panel.classList.contains('highlight'));  // false
+// Заменить класс
+panel.classList.replace('panel', 'new-panel');  // <div class="new-panel" style="background: red; color: black; display: block;">
+// Массовое добавление/удаление
+panel.classList.add('a', 'b', 'c');  // <div class="new-panel a b c" style="background: red; color: black; display: block;">
+panel.classList.remove('a', 'b');    // <div class="new-panel c" style="background: red; color: black; display: block;">
 ```
 
 ### События
