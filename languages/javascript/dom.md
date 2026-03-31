@@ -306,7 +306,28 @@ console.log(todoListElement);  // Элемент с id="todoList"
 ### Работа с содержимым
 
 ```javascript
+// element.textContent - Работает с чистым текстом (без тегов). Берёт весь текст из DOM, включая скрытые элементы (display: none)
+// Взять текст
+const block = document.querySelector('#testHtml');
+console.log(block.textContent); // "Текст с HTML-тегом HIDDEN" (тег <strong> исчез)
+// Записать текст (теги не сработают, станут простым текстом)
+const messageDiv = document.querySelector('.panel');
+messageDiv.textContent = '<button>Кликни меня</button>'; // Пользователь увидит строку <button>Кликни меня</button>
 
+// element.innerText - Берёт только видимый текст, учитывает CSS и переносы строк
+// Взять текст
+console.log(block.innerText);  // "Текст с HTML-тегом"
+// Записать текст
+messageDiv.innerText = 'Новый текст';
+
+// element.innerHTML - Работает с HTML-разметкой (риск XSS-атаки)
+// Взять текст
+console.log(block.innerHTML); // "Текст с <strong>HTML-тегом</strong> <span style=\"display:none\">HIDDEN</span>"
+// Записать текст
+messageDiv.innerHTML = '<button>Кликни меня</button>'; // На странице появится кнопка в панели
+// XSS-атака
+// const userInput = '<img src=x onerror=alert(1)>';
+// messageDiv.innerHTML = userInput;
 ```
 
 ### Работа с атрибутами
