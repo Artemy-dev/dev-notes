@@ -400,24 +400,86 @@ panel.classList.remove('a', 'b');    // <div class="new-panel c" style="backgrou
 
 ### События
 
-```javascript
+**События** - это сигналы от браузера о том, что что-то произошло (клик, ввод текста, загрузка страницы). JS может "слушать" эти события и выполнять код в ответ.
 
+```javascript
+const button = document.querySelector('.button');
+const input = document.querySelector('.input');
+const panel = document.querySelector('.panel');
+
+// addEventListener()
+// Вешаем слушатель события click (клик мышью) на кнопку Изменить
+button.addEventListener('click', function() {
+    const userText = input.value;  // Берем значение из поля ввода
+    panel.textContent = userText;  // Заменяем "JavaScript" на ввод от пользователя
+    input.value = '';              // Очищаем поле ввода
+});
 ```
 
 ### Управление событиями
 
 ```javascript
+// Объект события (event) - Автоматически передается в функцию-обработчик. Содержит информацию о событии и целевой элемент.
+// Пример с делегированием из todoList
+const todoList = document.getElementById('todoList');
 
+todoList.addEventListener('click', function(event) {
+    // event.target — элемент, на котором реально произошел клик (<li>)
+    if (event.target.tagName === 'LI') {
+        event.target.classList.toggle('hidden'); // Скрывает задачу
+    }
+});
 ```
 
 ### Создание и удаление элементов
 
 ```javascript
+const addButton = document.getElementById('addTodo');
+const newTodoInput = document.getElementById('newTodo');
+const todoListUl = document.getElementById('todoList');
+const removeButton = document.getElementById('removeLastTodo');
 
+// Создание элемента: document.createElement()
+addButton.addEventListener('click', function() {
+    const newTaskText = newTodoInput.value;
+    if (newTaskText === '') return;
+    const newLi = document.createElement('li');  // Создаем элемент <li>
+    newLi.textContent = newTaskText;             // Наполняем содержимым
+    todoListUl.appendChild(newLi);               // Добавляем в DOM (в конец списка)
+    newTodoInput.value = '';                     // Очищаем поле
+});
+
+// Добавить строку с HTML в конец списка
+// HTML-строка в элемент: insertAdjacentHTML (безопаснее innerHTML)
+todoListUl.insertAdjacentHTML('beforeend', '<li class="new">Новая задача из строки</li>');
+
+// Удаление элементов: remove()
+removeButton.addEventListener('click', function() {
+    const lastLi = todoListUl.lastElementChild; // последний <li>
+    if (lastLi) {
+        lastLi.remove();
+    }
+});
 ```
 
 ### Жизненный цикл
 
-```javascript
+Порядок загрузки страницы и моменты, когда можно безопасно работать с DOM.
 
+```javascript
+// DOMContentLoaded - Срабатывает, когда HTML полностью загружен и построено DOM-дерево. Это основное событие для начала работы.
+document.addEventListener('DOMContentLoaded', function() {
+    // В этот момент можно БЕЗОПАСНО искать элементы по id/классу
+    // Весь ваш основной код должен быть здесь
+    const button = document.querySelector('.button');
+    button.addEventListener('click', () => {});
+    console.log('DOM готов, можно работать с элементами');
+});
+
+// load - Срабатывает позже, когда загрузились не только HTML и DOM, но и все изображения, стили, iframe.
+window.addEventListener('load', function() {
+    console.log('Полностью загружена вся страница (картинки, стили)');
+});
 ```
+
+Атрибут defer `<script src="script.js" defer></script>` - cообщает браузеру: "скачай скрипт, но не жди его. Выполни его строго после построения DOM". Это самый удобный способ. Используя defer, скрипт выполнится после DOMContentLoaded, и можно писать код без обертки в DOMContentLoaded.
