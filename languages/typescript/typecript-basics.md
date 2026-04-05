@@ -19,7 +19,7 @@ node -v   # Покажет версию Node.js (например, v24.13.1)
 npm -v    # Покажет версию менеджера пакетов npm (например, 11.8.0)
 ```
 
-Установка TypeScript.
+### Установка TypeScript
 
 ```bash
 npm i -D typescript
