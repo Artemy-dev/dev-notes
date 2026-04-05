@@ -42,7 +42,7 @@ npx tsc --init
 const n: number = 5;
 ```
 
-Для компиляции `test.ts` в `test.js`, в Терминале вводим команду:
+Для компиляции `test.ts` в `test.js`, в терминале вводим команду:
 
 ```bash
 npx tsc
