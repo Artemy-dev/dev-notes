@@ -134,3 +134,113 @@ type Person = { id: number; name: string; };
 
 const person: Person = { id: 1, name: "Bob" };
 ```
+
+### Interface / Type
+
+В TS внутри `type` и `interface` в качестве разделителя полей можно использовать запятую (`,`), точку с запятой (`;`) или не ставить разделитель, если поля идут с новой строки (не рекомендуется).
+
+**Interface**
+
+```typescript
+interface User {
+    login: string,
+    password: string
+};
+
+//extends
+interface userAuth extends User {
+    email: string
+}
+
+const user: userAuth = {
+    login: 'admin',
+    password: '1234',
+    email: 'ext@mail.com'
+};
+
+function getLogin(user: User) {
+    console.log(user.login)
+}
+
+getLogin(user);  // admin
+
+function getEmail(user: userAuth) {
+    console.log(user.email)
+}
+
+getEmail(user);  // ext@mail.com
+```
+
+```typescript
+// Объединение деклараций (declaration merging) / Слияние интерфейсов (interface merging)
+interface User {
+    login: string
+};
+
+interface User {
+    password: string
+};
+
+const user: User = {
+    login: 'admin',
+    password: '1234'
+};
+
+console.log(user);  // { login: 'admin', password: '1234' }
+```
+
+**Type**
+
+```typescript
+type User = {
+    login: string,
+    password: string
+};
+
+type userAuth = User & {
+    email: string
+}
+
+const user: userAuth = {
+    login: 'admin',
+    password: '1234',
+    email: 'ext@mail.com'
+};
+
+function getLogin(user: User) {
+    console.log(user.login)
+}
+
+getLogin(user);  // admin
+
+function getEmail(user: userAuth) {
+    console.log(user.email)
+}
+
+getEmail(user);  // ext@mail.com
+
+// Создание собственного типа
+type text = string;
+const a: text = 'Hello';
+console.log(a);  // Hello
+```
+
+### Cast. Приведение типов (type assertion / type casting)
+
+Способ явно указать TS, что значение имеет определённый тип, чтобы компилятор разрешил операции с ним.
+
+```typescript
+const a: unknown = 'hello';
+// console.log(a.toUpperCase());  // Ошибка! TS не знает, что это строка, и запрещает
+const b = a as string;
+console.log(b.toUpperCase());  // HELLO
+
+interface User {
+    name: string;
+    age: number;
+}
+
+const userInfo: any = { name: 'Tim', age: 30 };
+const user = userInfo as User;
+console.log(user);  // { name: 'Tim', age: 30 }
+```
