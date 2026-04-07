@@ -244,3 +244,66 @@ const userInfo: any = { name: 'Tim', age: 30 };
 const user = userInfo as User;
 console.log(user);  // { name: 'Tim', age: 30 }
 ```
+
+### Литеральные типы
+
+```typescript
+type moveType = 'w' | 'a' | 's' | 'd';
+
+function movePlayer(action: moveType) {  // action может быть только 'w', 'a', 's' или 'd'
+    switch (action) {
+        case 'w':
+            'Up'
+            break;
+        case 'a':
+            'Left'
+            break;
+        case 's':
+            'Down'
+            break;
+        case 'd':
+            'Right'
+            break;
+    }
+}
+```
+
+### Enums
+
+```typescript
+// Enum с явными строковыми значениями
+enum Move {
+    Up = 'w',   // move.Up = 'w'
+    Down = 's'  // move.Down = 's'
+}
+
+function run(obj: { Up: string }) {
+    console.log('Run Up');
+}
+
+run(Move);  // Run Up
+
+// Числовой enum с автоинкрементом (после One = 1 следующему Two присваивается 2)
+enum numbers {
+    One = 1,  // numbers.One = 1 (если не указать явно, по умолчанию = 0)
+    Two,      // numbers.Two = 2 (присваевается по умолчанию)
+}
+
+// Гетерогенные enum (содержит числа и строки) - не рекомендуют смешивать типы без необходимости
+enum isAdmin {
+    Admin = 1,
+    NotAdmin = 'NOT'
+}
+
+// Расчитываемый enum (только числовые)
+enum yesOrNo {
+    Yes = 1,
+    No = calculateE()  // значение No получается из функции
+}
+
+function calculateE(): number {
+    return 0
+}
+
+console.log(yesOrNo.No);  // 0
+```
