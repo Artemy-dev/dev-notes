@@ -307,3 +307,53 @@ function calculateE(): number {
 
 console.log(yesOrNo.No);  // 0
 ```
+
+### Tuple (Кортеж)
+
+Кортеж является подтипом массива и наследует все методы (включая push, pop и т.д.).
+
+```typescript
+const t: [number, string, string] = [1, 'hello', 'TS'];
+t.push(2);       // .push() - добавляет элемент
+console.log(t);  // [ 1, 'hello', 'TS', 2 ]
+// console.log(t[3]);  // Ошибка!
+
+// Неизменяемый кортеж (readonly)
+const t2: readonly [number, string, string] = [1, 'hello', 'TS'];
+// t2.push(2);  // Ошибка!
+
+// Деструктуризация кортежа
+const [a, b, c] = t;
+console.log(b);  // hello
+
+// Rest-оператор
+const [d, ...r] = t;
+console.log(d);  // 1
+console.log(r);  // [ 'hello', 'TS', 2 ]
+```
+
+### Generics (Обобщения)
+
+Позволяют использовать функции для разных типов.
+
+```typescript
+// Без использования дженериков
+function func1(a: number): number {
+    console.log(typeof a);
+    return a;
+}
+
+function func2(a: string): string {
+    console.log(typeof a);
+    return a;
+}
+
+// Generics (<T>)
+function func3<T>(a: T): T {
+    console.log(typeof a);
+    return a;
+}
+
+func3<string>('text');  // string
+func3<number>(5);       // number
+```
