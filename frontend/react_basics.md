@@ -83,3 +83,95 @@ module.exports = {
         ],
     },
 ```
+
+Структура проекта:
+
+```
+dist/
+    index.html
+node_modules/
+src/
+    index.js
+.babelrc
+package-lock.json
+package.json
+webpack.config.js 
+```
+
+## React + Webpack
+
+Установка react и react-dom:
+
+```
+npm install --save react react-dom
+```
+
+src/index.js:
+
+```js
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+
+const title = 'React с Webpack и Babel';
+
+const root = ReactDOM.createRoot(document.getElementById('app'));
+root.render(<h1>{title}</h1>);
+```
+
+dist/index.html:
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hello React</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="./bundle.js"></script>
+  </body>
+</html>
+```
+
+Установка Webpack:
+
+```
+npm install --save-dev webpack webpack-cli webpack-dev-server
+```
+
+Настройка окружения. В `package.json` добавить в `"scripts": {}` команду `start`:
+
+```json
+{
+  "name": "react_app",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack serve --mode=development"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.29.0",
+    "@babel/preset-env": "^7.29.2",
+    "@babel/preset-react": "^7.28.5",
+    "babel-loader": "^10.1.1",
+    "webpack": "^5.106.2",
+    "webpack-cli": "^7.0.2",
+    "webpack-dev-server": "^5.2.3"
+  },
+  "dependencies": {
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5"
+  }
+}
+```
+
+Запуск проекта:
+
+```
+npm start
+```
