@@ -10,11 +10,10 @@
 **Установка**
 
 ```
-pip install celery flower pillow
+pip install celery flower
 ```
 
 * **flower** - для трекинга задач в web-интерфейсе.
-* **pillow** - библиотека для работы с изображениями.
 
 В каталоге с проектом создаем каталог `tasks/` и в нем файлы `celery.py` и `tasks.py`.
 
