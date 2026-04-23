@@ -974,57 +974,55 @@ b('Hello ');  // Hello Tim
 
 **Promises** - выполнение асинхронных действий в коде.
 
-**Цепочка then / catch**
+```js
+fetch("https://api.open-meteo.com/v1/forecast?latitude=54.3&longitude=48.4&current_weather=true")
+  .then((response) => response.json())
+  .then((data) => {
+    console.log(data);
+    console.log(`Температура: ${data.current_weather.temperature} °C`);
+  })
+  .catch((error) => console.error("Ошибка:", error));
+
+console.log("Прогноз погоды:");  // выполняется сразу (синхронно)
+```
+
+* **fetch()** - отправляет HTTP-запрос по URL, возвращает Promise с ответом (Response).
+* **.then()** - выполняется после успешного завершения предыдущего Promise, получает результат.
+* **.json()** - парсит тело ответа в JSON (тоже возвращает Promise).
+* **.catch()** - ловит любую ошибку на любом этапе цепочки.
+
+Объект `response` (который приходит в первый `.then())` содержит:
+
+* `response.status` - HTTP-код (`200`, `404`).
+* `response.ok` - `true` если статус 200-299.
+* `response.headers` - Заголовки ответа (`{ "content-type": "application/json" }`).
+
+Что содержит `data` (после `.json()`):
 
 ```js
-fetch('https://meowfacts.herokuapp.com/')
-  .then(resp => {
-    if (!resp.ok) {
-      throw new Error("Response error!");
-    }
-    return resp.json()  // обрабатываем успешный ответ
-  })
-  .then(data => console.log(data))  // второй then получает результат предыдущего
-  .catch(err => alert('Ошибка!'));  // ловит любую ошибку на любом этапе
-
-console.log("hello");
-```
-
-* **fetch()** - встроенная функция для HTTP-запросов. Она отправляет сетевой запрос, но не ждёт ответа.
-* **.then()** - принимает колбэк, который выполнится при успешном завершении Promise.
-* **throw** - создаёт исключение, переводя **Promise** в состояние **rejected** и направляя поток в `.catch()`.
-* **.json()** - асинхронно парсит тело ответа как **JSON**, возвращает **Promise** с результатом.
-* **.catch()** - перехватывает любую ошибку, возникшую в предыдущих `.then()` или в самом **Promise**.
-
-Запускать скрипт желательно в браузере через `index.html`:
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <script src="index.js"></script>
-  </body>
-</html>
-```
-
-Пример вывода в консоль браузера:
-
-```
-hello
-
-{
-    "data": [
-        "In 1987 cats overtook dogs as the number one pet in America."
-    ]
+data = {
+  latitude: 54.3125,              // широта (округлённая)
+  longitude: 48.375,              // долгота (округлённая)
+  generationtime_ms: 234.79,      // время расчёта в миллисекундах
+  utc_offset_seconds: 0,          // смещение от UTC (0 = GMT)
+  timezone: 'GMT',                // часовой пояс
+  elevation: 50,                  // высота над уровнем моря (метры)
+  current_weather_units: {        // единицы измерения (для справки)
+    temperature: '°C',
+    windspeed: 'km/h',
+    // ...
+  },
+  current_weather: {              // даные о погоде
+    time: '2026-04-23T13:45',     // время замера (UTC)
+    interval: 900,                // интервал (15 минут = 900 сек)
+    temperature: 11.2,            // температура в °C
+    windspeed: 14,                // скорость ветра в км/ч
+    winddirection: 206,           // направление в градусах (0° = север)
+    is_day: 1,                    // 1 = день, 0 = ночь
+    weathercode: 3                // код погоды (3 = пасмурно)
+  }
 }
 ```
-
-`hello` выведется раньше, т.к. на загрузку факта нужно некоторое количество времени и пока факт грузится программа не блокруется, а продолжает выполняться.
 
 ### Асинхронность в JS (Async / Await)
 
