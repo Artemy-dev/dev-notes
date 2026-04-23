@@ -978,12 +978,18 @@ b('Hello ');  // Hello Tim
 fetch("https://api.open-meteo.com/v1/forecast?latitude=54.3&longitude=48.4&current_weather=true")
   .then((response) => response.json())
   .then((data) => {
-    console.log(data);
     console.log(`Температура: ${data.current_weather.temperature} °C`);
   })
   .catch((error) => console.error("Ошибка:", error));
 
-console.log("Прогноз погоды:");  // выполняется сразу (синхронно)
+console.log("Прогноз погоды:");
+```
+
+Пример вывода:
+
+```
+Прогноз погоды:
+Температура: 11.1 °C
 ```
 
 * **fetch()** - отправляет HTTP-запрос по URL, возвращает Promise с ответом (Response).
