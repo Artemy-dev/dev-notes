@@ -974,12 +974,18 @@ b('Hello ');  // Hello Tim
 
 **Promises** - выполнение асинхронных действий в коде.
 
+Синтаксис:
+
+```js
+fetch(url)
+  .then(response => response.json())
+  .then(data => console.log(data))
+```
+
 ```js
 fetch("https://api.open-meteo.com/v1/forecast?latitude=54.3&longitude=48.4&current_weather=true")
-  .then((response) => response.json())
-  .then((data) => {
-    console.log(`Температура: ${data.current_weather.temperature} °C`);
-  })
+  .then(response => response.json())
+  .then(data => console.log(`Температура: ${data.current_weather.temperature} °C`))
   .catch((error) => console.error("Ошибка:", error));
 
 console.log("Прогноз погоды:");
@@ -1034,34 +1040,41 @@ data = {
 
 **Async / Await** - синтаксический сахар (надстройка в языке над сложными вариациями кода).
 
+Синтаксис:
+
 ```js
-async function getFact() {
+async function get() {
   try {
-    const resp = await fetch("https://meowfacts.herokuapp.com/");
-    const data = await resp.json();
+    const response = await fetch(url);
+    const data = await response.json();
     console.log(data);
   } catch (error) {
-    console.error('Error:', error);
+    console.error("Ошибка:", error);
+  }
+}
+```
+
+```js
+async function getWeather() {
+  try {
+    const response = await fetch("https://api.open-meteo.com/v1/forecast?latitude=54.3&longitude=48.4&current_weather=true");
+    const data = await response.json();
+    console.log(`Температура: ${data.current_weather.temperature} °C`);
+  } catch (error) {
+    console.error("Ошибка:", error);
   }
 }
 
-getFact();
-console.log("hello");
+console.log("Прогноз погоды:");
+getWeather();
 ```
 
-* **async** - ключевое слово, которое ставится перед объявлением функции. Оно автоматически превращает результат функции в **Promise**. Внутри такой функции можно использовать `await`.
-* **await** -  оператор, который может использоваться только внутри `async`-функции. Он приостанавливает выполнение этой функции внутри неё, ожидая разрешения **Promise**, но не блокирует остальной код (например, `console.log("hello")` выполнится сразу). Как только **Promise** завершится, `await` возвращает его результат (если успех) или выбрасывает исключение (если ошибка).
-* **try/catch** - конструкция для обработки ошибок в асинхронных функциях. Внутри блока `try` выполняется код, который может выбросить исключение (например, при неудачном `fetch` или при ошибке в `resp.json()`).
-Если возникает ошибка (или **Promise** переходит в состояние **rejected**), управление переходит в блок `catch`, где можно обработать эту ошибку (например, вывести сообщение в консоль).
-
-Пример вывода в консоль браузера:
+Пример вывода:
 
 ```
-hello
+Прогноз погоды:
+Температура: 11.1 °C
+```
 
-{
-    "data": [
-        "Cats, especially older cats, do get cancer. Many times this disease can be treated successfully."
-    ]
-}
-``` 
+* **async** перед функцией говорит, что она всегда возвращает Promise.
+* **await** приостанавливает выполнение асинхронной функции до получения результата (Promise разрешится).
