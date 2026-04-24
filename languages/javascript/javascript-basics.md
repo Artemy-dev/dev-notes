@@ -1065,8 +1065,8 @@ async function getWeather() {
   }
 }
 
-console.log("Прогноз погоды:");
 getWeather();
+console.log("Прогноз погоды:");
 ```
 
 Пример вывода:
