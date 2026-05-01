@@ -12,6 +12,45 @@ npm create vite
 * Выбираем фреймворк (`Select a framework: React`).
 * Выбираем язык (`Select a variant: JavaScript`)
 
+```bash
+PS C:\Users\hello\Documents\JS> npm create vite
+Need to install the following packages:
+create-vite@9.0.6
+Ok to proceed? (y) y
+
+> npx
+> create-vite
+
+|
+o  Project name:
+|  learn-project
+|
+o  Select a framework:
+|  React
+|
+o  Select a variant:
+|  JavaScript
+|
+o  Install with npm and start now?
+|  Yes
+|
+o  Scaffolding project in C:\Users\hello\Documents\JS\learn-project...
+|
+o  Installing dependencies with npm...
+
+added 136 packages, and audited 137 packages in 32s
+
+31 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+|
+o  Starting dev server...
+
+> learn-project@0.0.0 dev
+> vite                       
+```
+
 Сообщение после завершения установки:
 
 ```
